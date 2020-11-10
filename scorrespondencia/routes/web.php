@@ -23,14 +23,32 @@ Route::get('/index', function () {
     return view('index');
 });
 
-Route::get('/usuarios', function () {
-    return view('usuarios');
+Route::get('/usuariosv', function () {
+    return view('contenido.usuarios');
+});
+
+Route::get('/direccionesv', function () {
+    return view('contenido.direcciones');
+});
+
+Route::get('/peticionesv', function () {
+    return view('contenido.peticionesv');
 });
 
 //rutas para controlador de personas
 Route::apiResource('personas', 'PersonasController');
-//Obtener datos de 1 registro especifico
+//Actualizar un registro especifico
 Route::put('/personas', 'PersonasController@update');
+
+//rutas para controlador de roles
+Route::apiResource('roles', 'RolesController');
+//Actualizar un registro especifico
+Route::put('/roles', 'RolesController@update');
+
+//rutas para controlador de usuarios
+Route::apiResource('usuarios', 'UsuariosController');
+//Actualizar un registro especifico
+Route::put('/usuarios', 'UsuariosController@update');
 
 
 

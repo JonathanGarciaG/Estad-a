@@ -1,147 +1,209 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+<?php
+
+
+
+?>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Sistema de atención ciudadana</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" />
-    <link rel="stylesheet" href="~/Content/font-awesome-4.7.0/css/font-awesome.min.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Sistema de Correspondencía</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="This is an example dashboard created using build-in elements and components.">
+    <meta name="msapplication-tap-highlight" content="no">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-
-</head>
-
-
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+<link href="./main.css" rel="stylesheet"></head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:rgb(99,100,102)">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-            <a class="navbar-brand">
-                <img src="~/Content/img/logovic.png" height="40" />
-            </a>
-            <a class="navbar-brand">
-                Sistema de atención ciudadana
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
+<div id="app">
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        <div class="app-header bg-light header-shadow header-text-dark">
+            <div class="app-header__logo">
+                <div style="margin: 25%;"><img src="logovic.png"  width="90px"></div>                <div class="header__pane ml-auto">
+                    <div>
+                        <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="app-header__mobile-menu">
+                <div>
+                    <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                        <span class="hamburger-box">
+                            <span class="hamburger-inner"></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="app-header__menu">
+                <span>
+                    <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                        <span class="btn-icon-wrapper">
+                            <i class="fa fa-ellipsis-v fa-w-6"></i>
+                        </span>
+                    </button>
+                </span>
+            </div>    <div class="app-header__content">
+                <div class="app-header-left">
                     
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index","Solicitudes")">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Create","Solicitudes")">Registrar solicitud</a>
-                        </li>
-                    
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index","PanelDirector")">Inicio</a>
-                        </li>
-                    
-
-                    <li class="nav-item">
-                            <a class="nav-link" href="#">Ingresar persona</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Ingresar usuario</a>
-                        </li>
-
-                    <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Dropdown
+                    <ul class="header-menu nav">
+                        
+                        <li class="btn-group nav-item">
+                            <a href="javascript:void(0);" class="nav-link">
+                                <i class="nav-link-icon fa fa-edit"></i>
+                                Realizar Reporte
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Something else here</a>
+                        </li>
+                        
+                    </ul>        </div>
+                <div class="app-header-right">
+                    <div class="header-btn-lg pr-0">
+                        <div class="widget-content p-0">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left">
+                                    <div class="btn-group">
+                                        <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
+                                            <img width="42" class="rounded-circle" src="assets/images/avatars/1.jpg" alt="">
+                                            <i class="fa fa-angle-down ml-2 opacity-8"></i>
+                                        </a>
+                                        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                                            <h6 tabindex="-1" class="dropdown-header">Cuenta</h6>
+                                            <button type="button" tabindex="0" class="dropdown-item">Cerrar Sesion</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="widget-content-left  ml-3 header-user-info">
+                                    <div class="widget-heading">
+                                        Super Admin 
+                                    </div>
+                                    <div class="widget-subheading">
+                                        Administrador
+                                    </div>
+                                </div>
+                                <div class="col-md-2"><img src="logotam.png" width="90px"></div>
+
                             </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                        </li>
-
-                </ul>
-
-
-                <ul class="nav navbar-nav navbar-right">
-                    
-                        <li class="nav-item dropdown">
-                            <span id="cantidad_n" class="badge badge-pill badge-primary" style="float:left;margin-bottom:-10px;"></span> <!-- your badge -->
-
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Notificaciones
-                            </a>
-                            <div class="dropdown-menu" style="min-width:400px !important;" aria-labelledby="navbarDropdown" id="notificaciones_lista">
+                        </div>
+                    </div>        </div>
+            </div>
+        </div>                
+        <div class="app-main">
+                <div class="app-sidebar sidebar-shadow">
+                    <div class="app-header__logo">
+                        <div class="logo-src"></div>
+                        <div class="header__pane ml-auto">
+                            <div>
+                                <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                                    <span class="hamburger-box">
+                                        <span class="hamburger-inner"></span>
+                                    </span>
+                                </button>
                             </div>
-                        </li>
-                    
+                        </div>
+                    </div>
+                    <div class="app-header__mobile-menu">
+                        <div>
+                            <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                                <span class="hamburger-box">
+                                    <span class="hamburger-inner"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="app-header__menu">
+                        <span>
+                            <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                                <span class="btn-icon-wrapper">
+                                    <i class="fa fa-ellipsis-v fa-w-6"></i>
+                                </span>
+                            </button>
+                        </span>
+                    </div>    <div class="scrollbar-sidebar">
+                        <div class="app-sidebar__inner">
+                            <ul class="vertical-nav-menu">
+                                <li class="app-sidebar__heading">Administrador</li>
+                                <li>
+                                    <a href="index.html">
+                                        <i class="metismenu-icon pe-7s-home"></i>
+                                        Inicio
+                                    </a>
+                                    <a href="index.html" class="mm-active">
+                                        <i class="metismenu-icon pe-7s-user"></i>
+                                        Usuarios
+                                    </a>
+                                    <a href="index.html">
+                                        <i class="metismenu-icon pe-7s-culture"></i>
+                                        Direcciones
+                                    </a>
+                                </li>
+                                <li class="app-sidebar__heading">Peticiones</li>
+                                <li>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-mail-open-file"></i>
+                                        Reportes
+                                    </a>           
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-graph2"></i>
+                                        Estadisticas
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-settings"></i>
+                                        Configuración
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>    
+                <div class="app-main__outer">
+                    <div class="app-main__inner">
+                        
+                        @yield('contenido')
+                                
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="#!" onclick="cerrarSesionFunc()">Cerrar sesión (@Session["Usuario"])</a>
-                    </li>
-                    <li class="nav-item">
-                        <a>
-                            <img src="~/Content/img/logotam.png" height="40" />
-                        </a>
-                    </li>
-
-                </ul>
-                <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-            </div>
-        </nav>
-    }
-
-    <div class="container body-content" width="160%">
-        <br />
-        <br />
-        <br />
-
-        <br />
-        <hr />
-        <footer>
-            <p> - Sistema de atención ciudadana</p>
-        </footer>
-    </div>
-
-
-
-</body>
-
-<div class="modal fade" id="modalCerrarSesion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Cerrar sesión</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h6>¿Esta seguro de cerrar sesión?</h6>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <a href="@Url.Action("Logoff","Access",null)" class="btn btn-success">Aceptar</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-</html>
+    <div class="loader-wrapper">
+        <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </div>
+<script src="{{ asset('/jquery/dist/jquery.min.js') }}"></script>
+<script type="text/javascript" src="./assets/scripts/main.js"></script>
 
-
-
-<script type="text/javascript">
-    function cerrarSesionFunc() {
-        $('#modalCerrarSesion').modal('show');
-    }
-
+<script>
+    $(window).on("load",function(){
+        setTimeout(activar, 1000);
+        //Activar función
+        function activar() {
+            $('[data-toggle="tooltip"]').tooltip();
+            $(".loader-wrapper").fadeOut();
+        }
+    });
 </script>
+
+</body>
+</html>

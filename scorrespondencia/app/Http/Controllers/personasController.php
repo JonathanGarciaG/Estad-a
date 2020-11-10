@@ -10,7 +10,7 @@ class personasController extends Controller
 {
     //funcion que retorna los valores de los registros de la tabla personas
     public function index(){
-        //se retornan los valores de los usuarios exceptuando el del super user
+        //se retornan los valores de los registros de la tabla personas
     	return DB::table('personas')->get();
     }
 
