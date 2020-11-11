@@ -3,43 +3,30 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="main-card mb-3 card">
-                    <div class="card-header">Direcciones registradas
+                    <div class="card-header">Servicios registrados
                     </div>
                     <div class="table-responsive">
                         <table class="align-middle mb-0 table table-borderless table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th class="text-center">#</th>
-                                    <th>Nombre de dirección</th>
-                                    <th class="text-center">Persona a cargo</th>
+                                    <th>Servicio</th>
+                                    <th class="text-center">Dirección encargada</th>
                                     <th class="text-center">Acciones</th> 
                                 </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="direccion in direcciones" :key="direccion.id">
-                                    <td class="text-center text-muted">{{ direccion.id }}</td>
-                                    <td class="text-center text-muted">{{ direccion.nombre }}</td>
-                                    <td>
-                                        <div class="widget-content p-0">
-                                            <div class="widget-content-wrapper">
-                                                <div class="widget-content-left mr-3">
-                                                    <div class="widget-content-left">
-                                                        <img width="40" class="rounded-circle" v-bind:src="'.'+direccion.ruta_foto" alt="">
-                                                    </div>
-                                                </div>
-                                            <div class="widget-content-left flex2">
-                                                <div class="widget-heading">{{ direccion.nombre_persona }} {{ direccion.apellido_p }} {{ direccion.apellido_m }}</div>
-                                                <div class="widget-subheading opacity-7">{{ direccion.cargo }}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
+                            </thead>
+                            <tbody>
+                                <tr v-for="servicio in servicios" :key="servicio.id">
+                                <td class="text-center text-muted">{{ servicio.id }}</td>
+                                <td class="text-center text-muted">{{ servicio.nombre }}</td>
+                                <td class="text-center text-muted">{{ servicio.nombre_direccion }}</td>
+                                
                                 <td class="text-center">
-                                    <button class="mr-2 btn-icon btn-icon-only btn btn-outline-warning" v-on:click="camposUpdate(direccion)"><i class="pe-7s-pen btn-icon-wrapper"> </i></button>
-                                    <button class="mr-2 btn-icon btn-icon-only btn btn-outline-danger" v-on:click="mostrarModalDelete(direccion)"><i class="pe-7s-trash btn-icon-wrapper"> </i></button>
+                                    <button class="mr-2 btn-icon btn-icon-only btn btn-outline-warning" v-on:click="camposUpdate(servicio)"><i class="pe-7s-pen btn-icon-wrapper"> </i></button>
+                                    <button class="mr-2 btn-icon btn-icon-only btn btn-outline-danger" v-on:click="mostrarModalDelete(servicio)"><i class="pe-7s-trash btn-icon-wrapper"> </i></button>
                                 </td>
-                            </tr>
-                        </tbody>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                     <div class="d-block text-center card-footer">
@@ -50,13 +37,13 @@
         </div>
 
         <!-- Modal agregar nuevo -->
-        <div class="modal fade" id="modalNew" tabindex="2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" style="top: 100px; left: 100px;">
+        <div class="modal fade" id="modalNewServ" tabindex="2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" style="top: 100px; left: 100px;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <!-- al completar el form utiliza el metodo createNew() para agregar un nuevo registro -->
                     <form action="" v-on:submit.prevent="createNew()" enctype="multipart/form-data" class="form-horizontal">
                         <div class="modal-header">
-                            <h5 class="modal-title"  id="exampleModalLongTitle">Agregar Nueva dirección</h5>
+                            <h5 class="modal-title"  id="exampleModalLongTitle">Agregar Nuevo Servicio</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -64,26 +51,26 @@
                         <div class="modal-body">
                             <!-- En el formulario en la etiquetas input se utiliza la propiedad v-model que sirve para dar nombre al campo que tiene el valor que se tomara en los metodos de createNew -->
                             <div class="form-group row">
-                                <label class="col-md-3 form-control-label" for="text-input">Nombre de Dirección:</label>
+                                <label class="col-md-3 form-control-label" for="text-input">Nombre de Servicio:</label>
                                 <div class="col-md-9">
                                     <input type="text" id="nombre" name="nombre" v-model="nombre" class="form-control" placeholder="Nombre" required>
-                                    <span class="help-block">(*) Ingrese el Nombre de la dirección</span>
+                                    <span class="help-block">(*) Ingrese el Nombre del servicio</span>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-md-3 form-control-label" for="text-input">Persona a cargo:</label>
+                                <label class="col-md-3 form-control-label" for="text-input">Dirección a cargo:</label>
                                 <div class="col-md-9">
-                                    <select id="persona" name="persona" v-model="id_persona" class="form-control" placeholder="Persona" required>
+                                    <select id="direccion" name="direccion" v-model="id_direccion" class="form-control" placeholder="Dirección" required>
                                         <option
-                                          v-for="persona in personas"
-                                          :value="persona.id"
-                                          :key="persona.id"
+                                          v-for="direccion in direcciones"
+                                          :value="direccion.id"
+                                          :key="direccion.id"
                                         >
-                                          {{ persona.nombre }} {{ persona.apellido_p }} {{persona.apellido_m}}
+                                          {{ direccion.nombre }}
                                         </option>
                                     </select>
-                                    <span class="help-block">(*) Seleccione la persona acargo de la dirección</span>
+                                    <span class="help-block">(*) Seleccione la dirección a cargo del servicio</span>
                                 </div>
                             </div>
 
@@ -98,13 +85,13 @@
         </div>
 
         <!-- Modal editar -->
-        <div class="modal fade" id="modalUpdate" tabindex="2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" style="top: 100px; left: 100px;">
+        <div class="modal fade" id="modalUpdateServ" tabindex="2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" style="top: 100px; left: 100px;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <!-- al completar el form utiliza el metodo updateR() para modificar los registros obtenidos -->
                     <form action="" v-on:submit.prevent="updateR()" enctype="multipart/form-data" class="form-horizontal">
                         <div class="modal-header">
-                            <h5 class="modal-title"  id="exampleModalLongTitle">Editar direccion</h5>
+                            <h5 class="modal-title"  id="exampleModalLongTitle">Editar servicio</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -112,26 +99,26 @@
                         <div class="modal-body">
                             <!-- En el formulario en la etiquetas input se utiliza la propiedad v-model que sirve para dar nombre al campo que tiene el valor que se tomara en los metodos -->
                             <div class="form-group row">
-                                <label class="col-md-3 form-control-label" for="text-input">Nombre:</label>
+                                <label class="col-md-3 form-control-label" for="text-input">Nombre de Servicio:</label>
                                 <div class="col-md-9">
                                     <input type="text" id="nombre" name="nombre" v-model="nombre" class="form-control" placeholder="Nombre" required>
-                                    <span class="help-block">(*) Ingrese el Nombre de la direccion</span>
+                                    <span class="help-block">(*) Ingrese el Nombre del servicio</span>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-md-3 form-control-label" for="text-input">Persona a cargo:</label>
+                                <label class="col-md-3 form-control-label" for="text-input">Dirección a cargo:</label>
                                 <div class="col-md-9">
-                                    <select id="persona" name="persona" v-model="id_persona" class="form-control" placeholder="Persona" required>
+                                    <select id="direccion" name="direccion" v-model="id_direccion" class="form-control" placeholder="Dirección" required>
                                         <option
-                                          v-for="persona in personas"
-                                          :value="persona.id"
-                                          :key="persona.id"
+                                          v-for="direccion in direcciones"
+                                          :value="direccion.id"
+                                          :key="direccion.id"
                                         >
-                                          {{ persona.nombre }} {{ persona.apellido_p }} {{persona.apellido_m}}
+                                          {{ direccion.nombre }}
                                         </option>
                                     </select>
-                                    <span class="help-block">(*) Seleccione la persona a cargo de la dirección</span>
+                                    <span class="help-block">(*) Seleccione la dirección a cargo del servicio</span>
                                 </div>
                             </div>
 
@@ -147,7 +134,7 @@
         <!-- Fin Modal editar -->
 
         <!--Inicio del modal eliminar-->
-        <div class="modal fade" id="modalDelete"tabindex="2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" style="top: 60px;">
+        <div class="modal fade" id="modalDeleteServ"tabindex="2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" style="top: 60px;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                 <!-- al completar el form utiliza el metodo onClickDelete() para eliminar los datos de los productos -->
@@ -191,10 +178,10 @@
         data(){
             return{
                 nombre : "",
-                id_persona: 0,
+                id_direccion: 0,
                 id: 0,
+                servicios:[],
                 direcciones:[],
-                personas:[],
                 update:0,
                 id_borrar:0
             }
@@ -203,18 +190,18 @@
             console.log('Component mounted.')
             //actualiza los datos
             let me = this;
-            let url = './direcciones' //el url devuelve los registros de la tabla direccions
+            let url = './servicios' //el url devuelve los registros de la tabla servicios
             axios.get(url).then(function (response) {
                 //se almacenan al array los datos de la respuesta obtenida del url
-                me.direcciones = response.data;
+                me.servicios = response.data;
             })
             .catch(function (error) {
                 console.log(error);
             });
-            url = './personas'
+            url = './direcciones'
             axios.get(url).then(function (response) {
                 //se almacenan al array los datos de la respuesta obtenida del url
-                me.personas = response.data;
+                me.direcciones = response.data;
             })
             .catch(function (error) {
                 console.log(error);
@@ -226,18 +213,18 @@
             mostrarModal() {
                 //Se limpian los campos del modal
                 this.nombre = '';
-                this.id_persona = '';
-                $('#modalNew').modal('show');
+                this.id_direccion = '';
+                $('#modalNewServ').modal('show');
             },
             //Metodo para rellenar los campos del formulario y mostrar modal al momento de seleccionar un usuario.
             camposUpdate(data){
-                $('#modalUpdate').modal('show');
+                $('#modalUpdateServ').modal('show');
                 this.update = data.id;
                 let me = this;
-                let url = './direcciones/'+this.update;
+                let url = './servicios/'+this.update;
                 axios.get(url).then(function (response){
                     me.nombre = response.data.nombre;
-                    me.id_persona = response.data.id_persona;
+                    me.id_direccion = response.data.id_direccion;
                 }).catch(function (error){
                     console.log(error);
                 });
@@ -245,32 +232,32 @@
             //mostrar modal eliminar
             mostrarModalDelete(data) {
                 this.id_borrar = data.id;
-                $('#modalDelete').modal('show');               
+                $('#modalDeleteServ').modal('show');               
             },
             //Metodo para agregar un nuevo usuario
             createNew() {
                 //se toman los parametros de los campos
                 const params = {
                     nombre: this.nombre,
-                    id_persona: this.id_persona
+                    id_direccion: this.id_direccion
                 };
 
                 let me = this;
 
                 let formData = new FormData();
                 formData.append('nombre', this.nombre);
-                formData.append('id_persona', this.id_persona);
+                formData.append('id_direccion', this.id_direccion);
                 
                 //Petición post para hacer un nuevo registro.
-                axios.post('./direcciones', formData,{
+                axios.post('./servicios', formData,{
                      headers: {
                     'Content-Type': 'multipart/form-data'
                     }
                 }).then(function (response){
                     console.log(response);
-                    //Actualizando la lista de direcciones.
+                    //Actualizando la lista de servicios.
                     me.reloadData();
-                    swal("Exito!", "Se ha registrado una nueva dirección!", "success");
+                    swal("Exito!", "Se ha registrado un nuevo servicio", "success");
                 })
                 .catch(function (error){
                     console.log(error);
@@ -278,44 +265,44 @@
 
                 //Se limpian los campos del modal
                 this.nombre = '';
-                this.id_persona = '';
+                this.id_direccion = '';
             
                 //Ocultar el modal
-                $('#modalNew').modal('hide');
+                $('#modalNewServ').modal('hide');
             },
             //Metodo para actualizar los datos del registro.
             updateR(){
                 let me = this;
-                axios.put('./direcciones', {
+                axios.put('./servicios', {
                     'id' : this.update,
                     'nombre' : this.nombre,
-                    'id_persona' : this.id_persona
+                    'id_direccion' : this.id_direccion
                 }).then(function (response){
-                    swal("Dirección modificada", "Se ha modificado los datos de la dirección", "info");
+                    swal("Servicio modificada", "Se ha modificado los datos del servicio", "info");
                     me.reloadData();
                 }).catch(function (error){
                     console.log(error);
                 });
                 //Cerrando el modal después de actualizar el usuario.
-                $('#modalUpdate').modal('hide');
+                $('#modalUpdateServ').modal('hide');
                 this.nombre = '';
-                this.id_persona = 0;
+                this.id_direccion = 0;
             },
             //metodo para eliminar
             onClickDelete() {
                 let me = this;
-                axios.delete('./direcciones/'+this.id_borrar).then(() => {                    
+                axios.delete('./servicios/'+this.id_borrar).then(() => {                    
                     me.reloadData();
-                    swal("Dirección eliminada", "Se ha eliminado la dirección exitosamente", "info");
+                    swal("Servicio eliminado", "Se ha eliminado el servicio exitosamente", "info");
                 });
-                $('#modalDelete').modal('hide');
+                $('#modalDeleteServ').modal('hide');
             },
             //actualizar registros
             reloadData(){
                 let me = this;
-                let url = './direcciones' //url que retorna los registros de la tabla empresas
+                let url = './servicios' //url que retorna los registros de la tabla empresas
                 axios.get(url).then(function (response) {
-                    me.direcciones = response.data;
+                    me.servicios = response.data;
                 })
                 .catch(function (error) {
                     console.log(error);

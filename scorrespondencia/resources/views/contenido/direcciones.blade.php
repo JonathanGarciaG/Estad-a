@@ -9,7 +9,7 @@
                 </i>
             </div>
             <div>Direcciones
-                <div class="page-title-subheading">Página de Administración de Direcciones y Departamentos
+                <div class="page-title-subheading">Página de Administración de Direcciones y Servicios
                 </div>
             </div>
         </div>

@@ -26,6 +26,7 @@ Vue.component('personas-component', require('./components/PersonasComponent.vue'
 Vue.component('roles-component', require('./components/RolesComponent.vue').default);
 Vue.component('usuarios-component', require('./components/UsuariosComponent.vue').default);
 Vue.component('direcciones-component', require('./components/DireccionesComponent.vue').default);
+Vue.component('servicios-component', require('./components/ServiciosComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
