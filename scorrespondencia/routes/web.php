@@ -23,14 +23,17 @@ Route::get('/index', function () {
     return view('index');
 });
 
+//ruta retorna la vista de usuarios
 Route::get('/usuariosv', function () {
     return view('contenido.usuarios');
 });
 
+//ruta retorna la vista de direcciones
 Route::get('/direccionesv', function () {
     return view('contenido.direcciones');
 });
 
+//ruta retorna la vista de peticiones
 Route::get('/peticionesv', function () {
     return view('contenido.peticionesv');
 });
@@ -49,6 +52,11 @@ Route::put('/roles', 'RolesController@update');
 Route::apiResource('usuarios', 'UsuariosController');
 //Actualizar un registro especifico
 Route::put('/usuarios', 'UsuariosController@update');
+
+//rutas para controlador de direcciones
+Route::apiResource('usuarios', 'DireccionesController');
+//Actualizar un registro especifico
+Route::put('/usuarios', 'DireccionesController@update');
 
 
 
