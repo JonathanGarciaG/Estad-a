@@ -17,40 +17,154 @@ class solicitudesController extends Controller
     //metodo del controlador para agregar un usuario mediante un request recibido
     public function store(Request $request)
     {	
-    	//se toman los valores del request realizado
         $solicitud = new solicitudes();
-        $solicitud->p_nombre = $request->p_nombre;
-        $solicitud->p_apellido_p = $request->p_apellido_p;
-        $solicitud->p_apellido_m = $request->p_apellido_m;
-        $solicitud->p_celular = $request->p_celular;
-        $solicitud->p_fijo = $request->p_fijo;
-        $solicitud->p_correo = $request->p_correo;
-        $solicitud->p_id_colonia = $request->p_id_colonia;
-        $solicitud->p_calle_p = $request->p_calle_p;
-        $solicitud->p_calle_1 = $request->p_calle_1;
-        $solicitud->p_calle_2 = $request->p_calle_2;
-        $solicitud->p_numero_e = $request->p_numero_e;
-        $solicitud->p_referencias = $request->p_referencias;
+        //Guardando los valores de la peticion
+        if($request->p_nombre == '' || $request->p_apellido_p == '' || $request->p_apellido_m == ''){
+            $solicitud->p_nombre = 'ANÓNIMO';
+            $solicitud->p_apellido_p = 'N/A';
+            $solicitud->p_apellido_m = 'N/A';
+        }else{
+            $solicitud->p_nombre = $request->p_nombre;
+            $solicitud->p_apellido_p = $request->p_apellido_p;
+            $solicitud->p_apellido_m = $request->p_apellido_m;
+        }
+
+        if ($request->p_celular == '') {
+            $solicitud->p_celular = 'N/A';
+        }else{
+            $solicitud->p_celular = $request->p_celular;
+        }
+        
+        if ($request->p_fijo == '') {
+            $solicitud->p_fijo = 'N/A';
+        }else{
+            $solicitud->p_fijo = $request->p_fijo;
+        }
+        
+        if ($request->p_correo == '') {
+            $solicitud->p_correo = 'N/A';
+        }else{
+            $solicitud->p_correo = $request->p_correo;
+        }
+
+        if ($request->p_id_colonia == 0) {
+            $solicitud->p_id_colonia = 2;
+        }else{
+            $solicitud->p_id_colonia = $request->p_id_colonia;
+        }
+
+        if ($request->p_calle_p == '') {
+            $solicitud->p_calle_p = 'N/A';
+        }else{
+            $solicitud->p_calle_p = $request->p_calle_p;
+        }
+
+        if ($request->p_calle_1 == '') {
+            $solicitud->p_calle_1 = 'N/A';
+        }else{
+            $solicitud->p_calle_1 = $request->p_calle_1;
+        }
+
+        if ($request->p_calle_2 == '') {
+            $solicitud->p_calle_2 = 'N/A';
+        }else{
+            $solicitud->p_calle_2 = $request->p_calle_2;
+        }
+
+        if ($request->p_numero_e == '') {
+            $solicitud->p_numero_e = 'N/A';
+        }else{
+            $solicitud->p_numero_e = $request->p_numero_e;
+        }
+
+        if ($request->p_referencias == '') {
+            $solicitud->p_referencias = 'N/A';
+        }else{
+            $solicitud->p_referencias = $request->p_referencias;
+        }    
+        
+        $solicitud->b_solicitante = $request->b_solicitante;
+
+        if ($request->b_solicitante == 2) {
+            $solicitud->b_nombre = $solicitud->p_nombre;
+            $solicitud->b_apellido_p = $solicitud->p_apellido_p;
+            $solicitud->b_apellido_m = $solicitud->p_apellido_m;
+            $solicitud->b_celular = $solicitud->p_celular;
+            $solicitud->b_fijo = $solicitud->p_fijo;
+            $solicitud->b_correo = $solicitud->p_correo;
+        }else{
+            if($request->b_nombre == '' || $request->b_apellido_p == '' || $request->b_apellido_m == ''){
+                $solicitud->b_nombre = 'ANÓNIMO';
+                $solicitud->b_apellido_p = 'N/A';
+                $solicitud->b_apellido_m = 'N/A';
+            }else{
+                $solicitud->b_nombre = $request->b_nombre;
+                $solicitud->b_apellido_p = $request->b_apellido_p;
+                $solicitud->b_apellido_m = $request->b_apellido_m;
+            }
+
+            if ($request->b_celular == '') {
+                $solicitud->b_celular = 'N/A';
+            }else{
+                $solicitud->b_celular = $request->b_celular;
+            }
+            
+            if ($request->b_fijo == '') {
+                $solicitud->b_fijo = 'N/A';
+            }else{
+                $solicitud->b_fijo = $request->b_fijo;
+            }
+            
+            if ($request->b_correo == '') {
+                $solicitud->b_correo = 'N/A';
+            }else{
+                $solicitud->b_correo = $request->b_correo;
+            }
+        }
+        
+        if ($request->s_id_colonia == 0) {
+            $solicitud->s_id_colonia = 2;
+        }else{
+            $solicitud->s_id_colonia = $request->s_id_colonia;
+        }
+
+        if ($request->s_calle_p == '') {
+            $solicitud->s_calle_p = 'N/A';
+        }else{
+            $solicitud->s_calle_p = $request->s_calle_p;
+        }
+
+        if ($request->s_calle_1 == '') {
+            $solicitud->s_calle_1 = 'N/A';
+        }else{
+            $solicitud->s_calle_1 = $request->s_calle_1;
+        }
+
+        if ($request->s_calle_2 == '') {
+            $solicitud->s_calle_2 = 'N/A';
+        }else{
+            $solicitud->s_calle_2 = $request->s_calle_2;
+        }
+
+        if ($request->s_numero_e == '') {
+            $solicitud->s_numero_e = 'N/A';
+        }else{
+            $solicitud->s_numero_3 = $request->s_numero_e;
+        }
+
+        if ($request->s_referencias == '') {
+            $solicitud->s_referencias = 'N/A';
+        }else{
+            $solicitud->s_referencias = $request->s_referencias;
+        }
+
         $solicitud->s_descripcion = $request->s_descripcion;
         $solicitud->s_tipo = $request->s_tipo;
         $solicitud->s_id_servicio = $request->s_id_servicio;
         $solicitud->s_id_prioridad = $request->s_id_prioridad;
-        $solicitud->b_solicitante = $request->b_solicitante;
-        $solicitud->b_nombre = $request->b_nombre;
-        $solicitud->b_apellido_p = $request->b_apellido_p;
-        $solicitud->b_apellido_m = $request->b_apellido_m;
-        $solicitud->b_celular = $request->b_celular;
-        $solicitud->b_fijo = $request->b_fijo;
-        $solicitud->b_correo = $request->b_correo;
-        $solicitud->s_id_colonia = $request->s_id_colonia;
-        $solicitud->s_calle_p = $request->s_calle_p;
-        $solicitud->s_calle_1 = $request->s_calle_1;
-        $solicitud->s_calle_2 = $request->s_calle_2;
-        $solicitud->s_numero_e = $request->s_numero_e;
-        $solicitud->s_referencias = $request->s_referencias;
-        //se guardan los valores
+
         $solicitud->save();
-        //se retorna la solicitud guardado
+        
         return $solicitud;
     }
 
@@ -87,7 +201,7 @@ class solicitudesController extends Controller
         $solicitud->s_calle_2 = $request->s_calle_2;
         $solicitud->s_numero_e = $request->s_numero_e;
         $solicitud->s_referencias = $request->s_referencias;
-
+        //se guardan los valores
         $solicitud->save();
     }
 
@@ -103,4 +217,16 @@ class solicitudesController extends Controller
         $solicitud = solicitudes::find($id);
         $solicitud->delete();
     }
+
+    //metodo para guardar archivo adjunto de la solicitud
+    public function guardarArchivoAdjunto(Request $request)
+    {
+        //Verificando si se adjunto un archivo
+        if($request->hasFile('ruta_archivo')){
+            $file = $request->file('ruta_archivo');
+            $tituloimagen = 'AA_'.$request->id;
+            $file->move(public_path().'/assets/archivos/adjunto/', $tituloimagen);
+        } 
+    }
+    
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Contprioridadlers;
+namespace App\Http\Controllers;
 
 use App\prioridades;
 use DB;
 use Illuminate\Http\Request;
 
-class prioridadesContprioridadler extends Contprioridadler
+class prioridadesController extends Controller
 {
     //funcion que retorna los valores de los registros de la tabla de prioridades
     public function index(){

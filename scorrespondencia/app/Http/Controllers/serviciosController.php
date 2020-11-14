@@ -50,4 +50,11 @@ class serviciosController extends Controller
         $servicio = servicios::find($id);
         $servicio->delete();
     }
+
+    //metodo para buscar los servicios de una direccion
+    public function getService($id)
+    {
+        //se consultan los servicios
+        return DB::table('servicios')->join('direcciones', 'servicios.id_direccion', '=', 'direcciones.id')->select('servicios.*')->where('servicios.id_direccion','=',$id)->get();
+    }
 }

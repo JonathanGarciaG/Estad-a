@@ -63,10 +63,39 @@ Route::apiResource('direcciones', 'DireccionesController');
 //Actualizar un registro especifico
 Route::put('/direcciones', 'DireccionesController@update');
 
-//rutas para controlador de direcciones
+//rutas para controlador de servicios
 Route::apiResource('servicios', 'ServiciosController');
 //Actualizar un registro especifico
 Route::put('/servicios', 'ServiciosController@update');
+//Obtener los servicios de las direcciones
+Route::get('/getservice/{id}', 'ServiciosController@getService');
+
+//rutas para controlador de colonias
+Route::apiResource('colonias', 'ColoniasController');
+//Actualizar un registro especifico
+Route::put('/colonias', 'ColoniasController@update');
+//Obtener el cp de la colonia
+Route::get('/getcp/{id}', 'ColoniasController@mostrarCP');
+
+//rutas para controlador de prioridades
+Route::apiResource('prioridades', 'PrioridadesController');
+//Actualizar un registro especifico
+Route::put('/prioridades', 'PrioridadesController@update');
+
+//rutas para controlador de estados
+Route::apiResource('solicitudes', 'SolicitudesController');
+//Actualizar un registro especifico
+Route::put('/solicitudes', 'Solicitudes@update');
+
+//rutas para controlador de historiales
+Route::apiResource('historiales', 'HistorialesController');
+//Actualizar un registro especifico
+Route::put('/historiales', 'HistorialesController@update');
+
+//rutas para controlador de estados
+Route::apiResource('estados', 'EstadosController');
+//Actualizar un registro especifico
+Route::put('/estados', 'EstadosController@update');
 
 
 
