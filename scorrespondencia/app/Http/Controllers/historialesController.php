@@ -23,7 +23,7 @@ class historialesController extends Controller
         $historial->id_estado = $request->id_estado;
         $historial->id_solicitud = $request->id_solicitud;
         $historial->id_usuario = $request->id_usuario;
-        $historial->fecha = $request->fecha;
+        $historial->fecha = date("Y-m-d");
         
         //se guardan los valores
         $historial->save();

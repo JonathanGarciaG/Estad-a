@@ -2583,10 +2583,23 @@ __webpack_require__.r(__webpack_exports__);
           'Content-Type': 'multipart/form-data'
         }
       }).then(function (response) {
-        console.log(response); //Actualizando la lista de direcciones.
+        console.log(response);
+        var id_solicitud = response.data.id;
+        var id_usuario = 1; //Petición post para hacer un nuevo registro al historial de estados de peticion.
 
-        swal("Solicitud registrada", "Se ha registrado una nueva peticion!", "success");
-        window.location.href = './peticionesv';
+        axios.post('./historiales', {
+          'descripcion': "Recibido",
+          'id_estado': 1,
+          'id_solicitud': id_solicitud,
+          'id_usuario': id_usuario
+        }).then(function (response) {
+          console.log(response); //Actualizando la lista de direcciones.
+
+          swal("Solicitud registrada", "Se ha registrado una nueva peticion", "success");
+          window.location.href = './peticionesv';
+        })["catch"](function (error) {
+          console.log(error);
+        });
       })["catch"](function (error) {
         console.log(error);
       });
@@ -3093,6 +3106,152 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3104,6 +3263,7 @@ __webpack_require__.r(__webpack_exports__);
       id: 0,
       personas: [],
       peticiones: [],
+      estados: [],
       foto_old: "",
       update: 0,
       id_borrar: 0
@@ -3118,6 +3278,14 @@ __webpack_require__.r(__webpack_exports__);
     axios.get(url).then(function (response) {
       //se almacenan al array los datos de la respuesta obtenida del url
       me.peticiones = response.data;
+    })["catch"](function (error) {
+      console.log(error);
+    });
+    url = './estados'; //el url devuelve los registros de la tabla estados
+
+    axios.get(url).then(function (response) {
+      //se almacenan al array los datos de la respuesta obtenida del url
+      me.estados = response.data;
     })["catch"](function (error) {
       console.log(error);
     });
@@ -43081,7 +43249,7 @@ var render = function() {
       _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "main-card mb-3 card" }, [
           _c("div", { staticClass: "card-header" }, [
-            _vm._v("Reportes\n                                ")
+            _vm._v("Reportes\n                ")
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "table-responsive" }, [
@@ -43111,7 +43279,7 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("td", { staticClass: "text-center" }, [
-                        _vm._v(_vm._s(peticion.s_prioridad))
+                        _vm._v(_vm._s(peticion.prioridad))
                       ]),
                       _vm._v(" "),
                       _c("td", { staticClass: "text-center" }, [
@@ -43119,13 +43287,51 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("td", { staticClass: "text-center" }, [
-                        _c("div", { staticClass: "badge badge-success" }, [
-                          _vm._v(_vm._s(peticion.id))
-                        ])
+                        peticion.estado == 2
+                          ? _c("div", { staticClass: "badge badge-success" }, [
+                              _vm._v("Finalizado")
+                            ])
+                          : _c("div", { staticClass: "badge badge-info" }, [
+                              _vm._v("En proceso")
+                            ])
                       ]),
                       _vm._v(" "),
                       _c("td", { staticClass: "text-center" }, [
-                        _vm._m(1, true),
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "mr-2 btn-icon btn-icon-only btn btn-outline-warning",
+                            on: {
+                              click: function($event) {
+                                return _vm.camposUpdate(peticion)
+                              }
+                            }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "pe-7s-pen btn-icon-wrapper"
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "mr-2 btn-icon btn-icon-only btn btn-outline-warning",
+                            on: {
+                              click: function($event) {
+                                return _vm.mostrarModal(peticion)
+                              }
+                            }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "pe-7s-pen btn-icon-wrapper"
+                            })
+                          ]
+                        ),
                         _vm._v(" "),
                         _c(
                           "button",
@@ -43153,10 +43359,357 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm._m(2)
+          _vm._m(1)
         ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        staticStyle: { top: "60px" },
+        attrs: {
+          id: "modalNew",
+          tabindex: "2",
+          role: "dialog",
+          "aria-labelledby": "myLargeModalLabel",
+          "aria-hidden": "true",
+          "data-backdrop": "false"
+        }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog modal-lg" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c(
+              "form",
+              {
+                staticClass: "form-horizontal",
+                attrs: { action: "", enctype: "multipart/form-data" },
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.UpdateR()
+                  }
+                }
+              },
+              [
+                _vm._m(2),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _vm._m(3),
+                  _vm._v(" "),
+                  _c("h5", [_vm._v("Información para cambio de estado")]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "position-relative row form-group" },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-2 col-form-label",
+                          attrs: { for: "exampleSelectMulti" }
+                        },
+                        [_vm._v("Estado:")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-5" }, [
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.id_estado,
+                                expression: "id_estado"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              name: "id_estado",
+                              id: "id_estado",
+                              placeholder: "Estado",
+                              required: ""
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.id_estado = $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              }
+                            }
+                          },
+                          _vm._l(_vm.estados, function(estado) {
+                            return _c(
+                              "option",
+                              {
+                                key: estado.id,
+                                domProps: { value: estado.id }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(estado.nombre) +
+                                    "\n                            "
+                                )
+                              ]
+                            )
+                          }),
+                          0
+                        )
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "position-relative row form-group" },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-2 col-form-label",
+                          attrs: { for: "exampleSelectMulti" }
+                        },
+                        [_vm._v("Justificación del cambio de estado:")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-5" }, [
+                        _c("textarea", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.descripcion,
+                              expression: "descripcion"
+                            }
+                          ],
+                          attrs: {
+                            type: "text",
+                            id: "descripcion",
+                            name: "descripcion"
+                          },
+                          domProps: { value: _vm.descripcion },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.descripcion = $event.target.value
+                            }
+                          }
+                        })
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "position-relative row form-group" },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-2 col-form-label",
+                          attrs: { for: "exampleFile" }
+                        },
+                        [_vm._v("Adjuntar documento")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-10" }, [
+                        _c("input", {
+                          staticClass: "form-control-file",
+                          attrs: {
+                            name: "ruta_archivo",
+                            id: "ruta_archivo",
+                            type: "file",
+                            accept: "application/pdf,.jpg"
+                          },
+                          on: {
+                            change: function($event) {
+                              return _vm.handleFiles()
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("small", { staticClass: "form-text text-muted" })
+                      ])
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._m(4)
+              ]
+            )
+          ])
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        staticStyle: { top: "60px" },
+        attrs: {
+          id: "modalInfo",
+          tabindex: "2",
+          role: "dialog",
+          "aria-labelledby": "myLargeModalLabel",
+          "aria-hidden": "true",
+          "data-backdrop": "false"
+        }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog modal-lg" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c(
+              "form",
+              {
+                staticClass: "form-horizontal",
+                attrs: { action: "", enctype: "multipart/form-data" }
+              },
+              [
+                _vm._m(5),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("h5", [
+                    _vm._v(
+                      "¿Está seguro que desea eliminar el registro de persona?"
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("div", { staticClass: "col-md-9" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.id_borrar,
+                            expression: "id_borrar"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "hidden",
+                          id: "id_borrar",
+                          name: "id_borrar",
+                          placeholder: "idborrar",
+                          required: ""
+                        },
+                        domProps: { value: _vm.id_borrar },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.id_borrar = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._m(6)
+              ]
+            )
+          ])
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        staticStyle: { top: "60px" },
+        attrs: {
+          id: "modalHistorial",
+          tabindex: "2",
+          role: "dialog",
+          "aria-labelledby": "myLargeModalLabel",
+          "aria-hidden": "true",
+          "data-backdrop": "false"
+        }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog modal-lg" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c(
+              "form",
+              {
+                staticClass: "form-horizontal",
+                attrs: { action: "", enctype: "multipart/form-data" },
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.onClickDelete()
+                  }
+                }
+              },
+              [
+                _vm._m(7),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("h5", [
+                    _vm._v(
+                      "¿Está seguro que desea eliminar el registro de persona?"
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("div", { staticClass: "col-md-9" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.id_borrar,
+                            expression: "id_borrar"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "hidden",
+                          id: "id_borrar",
+                          name: "id_borrar",
+                          placeholder: "idborrar",
+                          required: ""
+                        },
+                        domProps: { value: _vm.id_borrar },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.id_borrar = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._m(8)
+              ]
+            )
+          ])
+        ])
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -43184,23 +43737,212 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "mr-2 btn-icon btn-icon-only btn btn-outline-warning",
-        attrs: { "on:click": "camposUpdate(peticion)" }
-      },
-      [_c("i", { staticClass: "pe-7s-pen btn-icon-wrapper" })]
-    )
+    return _c("div", { staticClass: "d-block text-center card-footer" }, [
+      _c("button", { staticClass: "btn-wide btn btn-success" }, [
+        _vm._v("Nuevo")
+      ])
+    ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-block text-center card-footer" }, [
-      _c("button", { staticClass: "btn-wide btn btn-success" }, [
-        _vm._v("Nuevo")
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLongTitle" } },
+        [_vm._v("Datos de Petición")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "list-group" }, [
+      _c(
+        "button",
+        { staticClass: "active list-group-item-action list-group-item" },
+        [_vm._v("Petición")]
+      ),
+      _vm._v(" "),
+      _c("button", { staticClass: "list-group-item-action list-group-item" }, [
+        _vm._v("Nombre del Solicitante")
+      ]),
+      _vm._v(" "),
+      _c("button", { staticClass: "list-group-item-action list-group-item" }, [
+        _vm._v("Telefono del solicitante")
+      ]),
+      _vm._v(" "),
+      _c("button", { staticClass: "list-group-item-action list-group-item" }, [
+        _vm._v("Fecha")
+      ]),
+      _vm._v(" "),
+      _c("button", { staticClass: "list-group-item-action list-group-item" }, [
+        _vm._v("Estado")
+      ]),
+      _vm._v(" "),
+      _c("button", { staticClass: "list-group-item-action list-group-item" }, [
+        _vm._v("Ultima fecha de modificación de Estado")
+      ]),
+      _vm._v(" "),
+      _c("button", { staticClass: "list-group-item-action list-group-item" }, [
+        _vm._v("Ultima justificación de modificación de estado")
+      ]),
+      _vm._v(" "),
+      _c("button", { staticClass: "list-group-item-action list-group-item" }, [
+        _vm._v("Descripción de solicitud")
+      ]),
+      _vm._v(" "),
+      _c("button", { staticClass: "list-group-item-action list-group-item" }, [
+        _vm._v("Servicio asignado")
+      ]),
+      _vm._v(" "),
+      _c("button", { staticClass: "list-group-item-action list-group-item" }, [
+        _vm._v("Prioridad de la solicitud")
+      ]),
+      _vm._v(" "),
+      _c("button", { staticClass: "list-group-item-action list-group-item" }, [
+        _vm._v("Colonia")
+      ]),
+      _vm._v(" "),
+      _c("button", { staticClass: "list-group-item-action list-group-item" }, [
+        _vm._v("Calle")
+      ]),
+      _vm._v(" "),
+      _c("button", { staticClass: "list-group-item-action list-group-item" }, [
+        _vm._v("Entre calles")
+      ]),
+      _vm._v(" "),
+      _c("button", { staticClass: "list-group-item-action list-group-item" }, [
+        _vm._v("Referencias")
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Cancelar")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        [_vm._v("Registrar")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLongTitle" } },
+        [_vm._v("Eliminar Persona")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Cancelar")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        [_vm._v("Si")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLongTitle" } },
+        [_vm._v("Eliminar Persona")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Cancelar")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        [_vm._v("Si")]
+      )
     ])
   }
 ]

@@ -180,7 +180,7 @@
         </div>
         <!-- Fin Modal editar -->
 
-        <!--Inicio del modal eliminar-->
+        <!--Inicio del modal de Información-->
         <div class="modal fade" id="modalDelete"tabindex="2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" style="top: 60px;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">

@@ -11,7 +11,8 @@ class solicitudesController extends Controller
     //funcion que retorna los valores de los registros de la tabla solicitudes
     public function index(){
         //se retornan los valores de los registros de la tabla solicitudes
-    	return DB::table('solicitudes')->get();
+        return DB::table('solicitudes')->join('prioridades', 'solicitudes.s_id_prioridad', '=', 'prioridades.id')->join('historials', 'solicitudes.id', '=', 'historials.id_solicitud')->select('solicitudes.*', 'prioridades.nombre as prioridad', 'historials.id_estado as estado')->latest('historials.created_at')->get();
+    	//return DB::table('solicitudes')->join('prioridades', 'solicitudes.s_id_prioridad', '=', 'prioridades.id')->join('historials', 'solicitudes.id', '=', 'historials.id_solicitud')->select('solicitudes.*', 'prioridades.nombre as prioridad', 'historials.id_estado as estado')->get();
     }
 
     //metodo del controlador para agregar un usuario mediante un request recibido
@@ -203,6 +204,8 @@ class solicitudesController extends Controller
         $solicitud->s_referencias = $request->s_referencias;
         //se guardan los valores
         $solicitud->save();
+
+        return $solicitud;
     }
 
     public function show($id){

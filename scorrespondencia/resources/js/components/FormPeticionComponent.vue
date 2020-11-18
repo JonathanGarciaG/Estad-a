@@ -316,9 +316,24 @@
                     }
                 }).then(function (response){
                     console.log(response);
-                    //Actualizando la lista de direcciones.
-                    swal("Solicitud registrada", "Se ha registrado una nueva peticion!", "success");
-                    window.location.href = './peticionesv'
+                    let id_solicitud = response.data.id;
+                    let id_usuario = 1; 
+
+                    //Petición post para hacer un nuevo registro al historial de estados de peticion.
+                    axios.post('./historiales', {
+                        'descripcion' : "Recibido",
+                        'id_estado' : 1,
+                        'id_solicitud' : id_solicitud,
+                        'id_usuario' : id_usuario
+                    }).then(function (response){
+                        console.log(response);
+                        //Actualizando la lista de direcciones.
+                        swal("Solicitud registrada", "Se ha registrado una nueva peticion", "success");
+                        window.location.href = './peticionesv'
+                    })
+                    .catch(function (error){
+                        console.log(error);
+                    });
                 })
                 .catch(function (error){
                     console.log(error);
