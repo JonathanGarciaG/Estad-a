@@ -29,6 +29,7 @@ Vue.component('direcciones-component', require('./components/DireccionesComponen
 Vue.component('servicios-component', require('./components/ServiciosComponent.vue').default);
 Vue.component('formpeticion-component', require('./components/FormPeticionComponent.vue').default);
 Vue.component('peticiones-component', require('./components/PeticionesComponent.vue').default);
+Vue.component('estado-component', require('./components/EstadoComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -24,6 +24,13 @@ class historialesController extends Controller
         $historial->id_solicitud = $request->id_solicitud;
         $historial->id_usuario = $request->id_usuario;
         $historial->fecha = date("Y-m-d");
+
+        //Verificando si se adjunto un archivo
+        if($request->hasFile('ruta')){
+            $file = $request->file('ruta');
+            $tituloimagen = 'AA_'.$historial->fecha.'_'.$historial->descripcion;
+            $file->move(public_path().'/assets/archivos/adjunto/', $tituloimagen);
+        } 
         
         //se guardan los valores
         $historial->save();
@@ -55,5 +62,13 @@ class historialesController extends Controller
     	//se busca a la historial que se quiere eliminar
         $historial = historial::find($id);
         $historial->delete();
+    }
+
+    public function getEstadoPeticion($id){
+        return DB::table('historials')->join('estados', 'historials.id_estado', '=', 'estados.id')->select('historials.*', 'estados.nombre as estado')->where('historials.id_solicitud','=',$id)->orderBy('historials.created_at', 'desc')->limit(1)->get()->toArray();
+    }
+
+    public function getHistorial($id){
+        return DB::table('historials')->join('estados', 'historials.id_estado', '=', 'estados.id')->select('historials.*', 'estados.nombre as estado')->where('historials.id_solicitud','=',$id)->orderBy('historials.created_at', 'desc')->get()->toArray();
     }
 }

@@ -10,17 +10,23 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//rutas para login
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
+Route::get('/login', function () {
+    return view('login');
+});
+Route::post('/acceder', 'UsuariosController@acceder');
 
+
+//rutas para vistas
 Route::get('/home', function () {
     return view('layout');
 });
 
 Route::get('/index', function () {
-    return view('index');
+    return view('index_admin');
 });
 
 //ruta retorna la vista de usuarios
@@ -85,12 +91,18 @@ Route::put('/prioridades', 'PrioridadesController@update');
 //rutas para controlador de estados
 Route::apiResource('solicitudes', 'SolicitudesController');
 //Actualizar un registro especifico
-Route::put('/solicitudes', 'Solicitudes@update');
+Route::put('/solicitudes', 'SolicitudesController@update');
+//Obtener la informacion de la solicitud
+Route::get('/peticioninfo/{id}', 'SolicitudesController@peticionInfo');
 
 //rutas para controlador de historiales
 Route::apiResource('historiales', 'HistorialesController');
 //Actualizar un registro especifico
 Route::put('/historiales', 'HistorialesController@update');
+//mostrar el estado mas reciente de la peticion
+Route::get('/getestadopeticion/{id}', 'HistorialesController@getEstadoPeticion');
+//mostrar el historial de estados
+Route::get('/gethistorial/{id}', 'HistorialesController@getHistorial');
 
 //rutas para controlador de estados
 Route::apiResource('estados', 'EstadosController');

@@ -55,4 +55,19 @@ class usuariosController extends Controller
         $usuario = usuarios::find($id);
         $usuario->delete();
     }
+
+    //metodo para acceder mediante el login
+    public function acceder(Request $request)
+    {
+        //se busca al usuario que se quiere eliminar
+        return $usuario = DB::table('usuarios')->join('personas', 'usuarios.id_persona', '=', 'personas.id')->join('roles', 'usuarios.id_rol', '=', 'roles.id')->select('usuarios.*', 'personas.nombre as nombre_persona', 'personas.apellido_p', 'personas.apellido_m', 'personas.cargo', 'personas.ruta_foto', 'roles.nombre as nombre_rol')->where('usuarios.nombre','=',$request->usuario)->where('usuarios.contraseña','=',$request->contrasena)->get()->toArray();
+        
+        if($usuario!=null){
+            $request->session()->put('data',$usuario);
+            redirect('index');
+        }else{
+            redirect('login');
+        }
+
+    }
 }

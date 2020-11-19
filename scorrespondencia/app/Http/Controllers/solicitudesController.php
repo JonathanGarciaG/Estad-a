@@ -11,7 +11,7 @@ class solicitudesController extends Controller
     //funcion que retorna los valores de los registros de la tabla solicitudes
     public function index(){
         //se retornan los valores de los registros de la tabla solicitudes
-        return DB::table('solicitudes')->join('prioridades', 'solicitudes.s_id_prioridad', '=', 'prioridades.id')->join('historials', 'solicitudes.id', '=', 'historials.id_solicitud')->select('solicitudes.*', 'prioridades.nombre as prioridad', 'historials.id_estado as estado')->latest('historials.created_at')->get();
+        return DB::table('solicitudes')->join('prioridades', 'solicitudes.s_id_prioridad', '=', 'prioridades.id')->select('solicitudes.*', 'prioridades.nombre as prioridad')->get();
     	//return DB::table('solicitudes')->join('prioridades', 'solicitudes.s_id_prioridad', '=', 'prioridades.id')->join('historials', 'solicitudes.id', '=', 'historials.id_solicitud')->select('solicitudes.*', 'prioridades.nombre as prioridad', 'historials.id_estado as estado')->get();
     }
 
@@ -230,6 +230,12 @@ class solicitudesController extends Controller
             $tituloimagen = 'AA_'.$request->id;
             $file->move(public_path().'/assets/archivos/adjunto/', $tituloimagen);
         } 
+    }
+
+    //metodo para tomar la informacion necesaria de la peticion
+    public function peticionInfo($id)
+    {
+        return DB::table('solicitudes')->join('historials', 'historials.id_solicitud', '=', 'solicitudes.id')->join('prioridades', 'prioridades.id', '=', 'solicitudes.s_id_prioridad')->join('servicios', 'servicios.id', '=', 'solicitudes.s_id_servicio')->join('colonias', 'colonias.id', '=', 'solicitudes.s_id_colonia')->select(DB::raw('solicitudes.*, historials.created_at as ultima, historials.descripcion, servicios.nombre as servicio, prioridades.nombre as prioridad, colonias.nombre as colonia'))->where('historials.id_solicitud','=',$id)->orderBy('historials.created_at', 'desc')->limit(1)->get()->toArray();      
     }
     
 }

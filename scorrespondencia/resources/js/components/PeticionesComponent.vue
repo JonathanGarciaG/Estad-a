@@ -24,13 +24,12 @@
                                     <td class="text-center">{{peticion.prioridad}}</td>
                                     <td class="text-center">{{peticion.created_at}}</td>
                                     <td class="text-center">
-                                        <div v-if="peticion.estado==2" class="badge badge-success">Finalizado</div>
-                                        <div v-else class="badge badge-info">En proceso</div>
+                                        <estado-component :peticion="peticion"></estado-component>
                                     </td>
                                     <td class="text-center">
-                                        <button class="mr-2 btn-icon btn-icon-only btn btn-outline-warning" v-on:click="camposUpdate(peticion)"><i class="pe-7s-pen btn-icon-wrapper"> </i></button>
                                         <button class="mr-2 btn-icon btn-icon-only btn btn-outline-warning" v-on:click="mostrarModal(peticion)"><i class="pe-7s-pen btn-icon-wrapper"> </i></button>
-                                        <button class="mr-2 btn-icon btn-icon-only btn btn-outline-success" v-on:click="mostrarModalDelete(peticion)"><i class="pe-7s-note btn-icon-wrapper"> </i></button>
+                                        <button class="mr-2 btn-icon btn-icon-only btn btn-outline-info" v-on:click="mostrarModalInfo(peticion)"><i class="pe-7s-look btn-icon-wrapper"> </i></button>
+                                        <button class="mr-2 btn-icon btn-icon-only btn btn-outline-success" v-on:click="mostrarModalHistorial(peticion)"><i class="pe-7s-menu btn-icon-wrapper"> </i></button>
                                     </td>
                                 </tr>              
                             </tbody>
@@ -47,12 +46,11 @@
         <div class="modal fade" id="modalNew" tabindex="2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" style="top: 60px;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                <!-- al completar el form utiliza el metodo onClickDelete() para eliminar los datos de los productos -->
-                <form action="" v-on:submit.prevent="UpdateR()" enctype="multipart/form-data" class="form-horizontal">
-
+                <!-- al completar el form utiliza el metodo createNew() para agregar un nuevo registro en el Historial -->
+                <form action="" v-on:submit.prevent="createNew()" enctype="multipart/form-data" class="form-horizontal">
 
                     <div class="modal-header">
-                        <h5 class="modal-title"  id="exampleModalLongTitle">Datos de Petición</h5>
+                        <h5 class="modal-title"  id="exampleModalLongTitle">Información de la Petición</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -61,20 +59,22 @@
 
                         <ul class="list-group">
                             <button class="active list-group-item-action list-group-item">Petición</button>
-                            <button class="list-group-item-action list-group-item">Nombre del Solicitante</button>
-                            <button class="list-group-item-action list-group-item">Telefono del solicitante</button>
-                            <button class="list-group-item-action list-group-item">Fecha</button>
-                            <button class="list-group-item-action list-group-item">Estado</button>
-                            <button class="list-group-item-action list-group-item">Ultima fecha de modificación de Estado</button>
-                            <button class="list-group-item-action list-group-item">Ultima justificación de modificación de estado</button>
-                            <button class="list-group-item-action list-group-item">Descripción de solicitud</button>
-                            <button class="list-group-item-action list-group-item">Servicio asignado</button>
-                            <button class="list-group-item-action list-group-item">Prioridad de la solicitud</button>
-                            <button class="list-group-item-action list-group-item">Colonia</button>
-                            <button class="list-group-item-action list-group-item">Calle</button>
-                            <button class="list-group-item-action list-group-item">Entre calles</button>
-                            <button class="list-group-item-action list-group-item">Referencias</button>
+                            <button class="list-group-item-action list-group-item"><strong>Nombre del Solicitante:</strong> <center>{{ nombre }}</center></button>
+                            <button class="list-group-item-action list-group-item"><strong>Telefono del solicitante:</strong> {{ telefono }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Fecha:</strong> {{ fecha }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Estado:</strong> {{ estado }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Ultima fecha de modificación de Estado:</strong> {{ ultimafecha }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Ultima justificación de modificación de estado:</strong> {{ ultimanota }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Descripción de solicitud:</strong> {{ descripcions }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Servicio asignado:</strong> {{ servicio }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Prioridad de la solicitud:</strong> {{ prioridad }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Colonia:</strong> {{ colonia }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Calle:</strong> {{ calle }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Entre calles:</strong> {{ entre }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Referencias:</strong> {{ referencias }}</button>
                         </ul>
+
+                        <hr>
 
                         <h5>Información para cambio de estado</h5>
 
@@ -91,20 +91,18 @@
 
                         <div class="position-relative row form-group"><label for="exampleSelectMulti" class="col-sm-2 col-form-label">Justificación del cambio de estado:</label>
                             <div class="col-sm-5">
-                                <textarea type="text" id="descripcion" name="descripcion" v-model="descripcion"></textarea>
+                                <textarea class="form-control" type="text" id="descripcion" name="descripcion" v-model="descripcion" required></textarea>
                             </div>
                         </div>
 
                         <div class="position-relative row form-group"><label for="exampleFile" class="col-sm-2 col-form-label">Adjuntar documento</label>
-                            <div class="col-sm-10"><input name="ruta_archivo" id="ruta_archivo" v-on:change="handleFiles()" type="file" class="form-control-file" accept="application/pdf,.jpg">
+                            <div class="col-sm-10"><input name="ruta_archivo" id="ruta_archivo" v-on:change="handleFilesUpload()" type="file" class="form-control-file" accept="application/pdf,.jpg">
                                 <small class="form-text text-muted"></small>
                             </div>
                         </div>
 
                     </div>
-
-                
-                
+ 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Registrar</button>
@@ -117,73 +115,114 @@
         </div>
         <!--Fin del modal-->
 
-        <!--Inicio del modal de mostrar historial de estados -->
-        <div class="modal fade" id="modalInfo"tabindex="2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" style="top: 60px;">
+        <!--Inicio del modal de Informacion-->
+        <div class="modal fade" id="modalInfo" tabindex="2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" style="top: 60px;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                <!-- al completar el form utiliza el metodo onClickDelete() para eliminar los datos de los productos -->
                 <form action="" enctype="multipart/form-data" class="form-horizontal">
 
-
                     <div class="modal-header">
-                        <h5 class="modal-title"  id="exampleModalLongTitle">Eliminar Persona</h5>
+                        <h5 class="modal-title"  id="exampleModalLongTitle">Historial de estados</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
 
-                        <h5>¿Está seguro que desea eliminar el registro de persona?</h5>
-
-                        <!-- Se utiliza un input oculto para tomar el id del producto que se va a borrar -->
-                        <div class="form-group row">
-                        <div class="col-md-9">
-                            <input type="hidden" id="id_borrar" name="id_borrar" v-model="id_borrar" class="form-control" placeholder="idborrar" required>
-                        </div>
+                        <ul class="list-group">
+                            <button class="active list-group-item-action list-group-item">Petición</button>
+                            <button class="list-group-item-action list-group-item"><strong>Nombre del Solicitante:</strong> <center>{{ nombre }}</center></button>
+                            <button class="list-group-item-action list-group-item"><strong>Telefono del solicitante:</strong> {{ telefono }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Fecha:</strong> {{ fecha }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Estado:</strong> {{ estado }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Ultima fecha de modificación de Estado:</strong> {{ ultimafecha }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Ultima justificación de modificación de estado:</strong> {{ ultimanota }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Descripción de solicitud:</strong> {{ descripcions }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Servicio asignado:</strong> {{ servicio }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Prioridad de la solicitud:</strong> {{ prioridad }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Colonia:</strong> {{ colonia }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Calle:</strong> {{ calle }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Entre calles:</strong> {{ entre }}</button>
+                            <button class="list-group-item-action list-group-item"><strong>Referencias:</strong> {{ referencias }}</button>
+                        </ul>
+                        
                     </div>
-
-                </div>
+ 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Si</button>
                 </div>
-                </form> 
+                </form>
+
                 </div>
+
             </div>
         </div>
         <!--Fin del modal-->
 
-        <!--Inicio del modal de Historial-->
-        <div class="modal fade" id="modalHistorial"tabindex="2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" style="top: 60px;">
+        <!--Inicio del modal de Informacion-->
+        <div class="modal fade" id="modalHistorial" tabindex="2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" style="top: 60px;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                <!-- al completar el form utiliza el metodo onClickDelete() para eliminar los datos de los productos -->
-                <form action="" v-on:submit.prevent="onClickDelete()" enctype="multipart/form-data" class="form-horizontal">
-
+                <form action="" enctype="multipart/form-data" class="form-horizontal">
 
                     <div class="modal-header">
-                        <h5 class="modal-title"  id="exampleModalLongTitle">Eliminar Persona</h5>
+                        <h5 class="modal-title"  id="exampleModalLongTitle">Información de la Petición</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
 
-                        <h5>¿Está seguro que desea eliminar el registro de persona?</h5>
-
-                        <!-- Se utiliza un input oculto para tomar el id del producto que se va a borrar -->
-                        <div class="form-group row">
-                        <div class="col-md-9">
-                            <input type="hidden" id="id_borrar" name="id_borrar" v-model="id_borrar" class="form-control" placeholder="idborrar" required>
+                        <div class="table-responsive">
+                            <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">ID</th>
+                                    <th class="text-center">Descripción</th>
+                                    <th class="text-center">Estado</th>
+                                    <th class="text-center">Fecha</th>
+                                    <th class="text-center">Opciones</th> 
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="historial in historiales" :key="historial.id">
+                                        <td class="text-center text-muted">{{ historial.id }}</td>
+                                        <td class="text-center">{{historial.descripcion }}</td>
+                                        <td class="text-center">{{historial.estado}}</td>
+                                        <td class="text-center">{{historial.fecha}}</td>
+                                        <td class="text-center">
+                                            <button class="mr-2 btn-icon btn-icon-only btn btn-outline-success" v-on:click="mostrarDoc(historial)"><i class="pe-7s-copy-file btn-icon-wrapper"> </i></button>
+                                        </td>
+                                    </tr>              
+                                </tbody>
+                            </table>
                         </div>
+                        
                     </div>
-
-                </div>
+ 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Si</button>
                 </div>
-                </form> 
+                </form>
+
+                </div>
+
+            </div>
+        </div>
+        <!--Fin del modal-->
+
+        <!--Inicio del modal de Visualizacion de acuse-->
+        <div class="modal fade" id="modalAcuse" tabindex="2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" style="top: 60px;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                
+                    <div class="main-card mb-3 card">
+                           <div class="card-body h-100">
+                               <h5 class="card-title">Oficio</h5>
+                               <object width="100%" height="100%" ></object>
+                           </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -196,18 +235,31 @@
     export default {
         data(){
             return{
-                nombre:"", 
-                apellido_p:"",  
-                apellido_m:"",
-                cargo:"",
+                descripcion:"",
                 ruta:"", 
                 id: 0,
                 personas:[],
                 peticiones:[],
                 estados:[],
-                foto_old:"",
-                update:0,
-                id_borrar:0
+                historiales:[],
+                id_peticion:0,
+                id_estado:0,
+                nombre:'',
+                telefono:'',
+                fecha:"",
+                estado:"",
+                ultimafecha:"",
+                ultimanota:"",
+                descripcions:"",
+                servicio:"",
+                prioridad:"",
+                colonia:"",
+                calle:"",
+                entre:"",
+                referencias:"",
+                id_solicitud:0,
+                id_usuario:0,
+                e_descripcion:""
             }
         },
         mounted() {
@@ -235,58 +287,89 @@
         //metodos utilizados
         methods: {
             //metodo para mostrar modal
-            mostrarModal() {
-                //Se limpian los campos del modal
-                this.nombre = '';
-                this.apellido_p = '';
-                this.apellido_m = '';
-                this.cargo = '';
+            mostrarModal(data) {
+                let me = this;
+                this.descripcion = '';
+                this.id_estado = 0;
                 this.ruta = '';
-                $('#modalNew').modal('show');
+                this.id_solicitud = data.id;
+                //Se limpian los campos del modal
+                let url = './peticioninfo/'+data.id;
+                axios.get(url).then(function (response){
+                    console.log(response.data);
+                    me.nombre = response.data[0].p_nombre+" "+response.data[0].p_apellido_p+" "+response.data[0].p_apellido_m;
+                    me.telefono = response.data[0].p_celular;
+                    me.fecha = response.data[0].created_at;
+                    me.estado = response.data[0].descripcion;
+                    me.ultimafecha = response.data[0].ultima;
+                    me.ultimanota = response.data[0].descripcion;
+                    me.descripcions = response.data[0].s_descripcion;
+                    me.servicio = response.data[0].servicio;
+                    me.prioridad = response.data[0].prioridad;
+                    me.colonia = response.data[0].colonia;
+                    me.calle = response.data[0].s_calle_p;
+                    me.entre = response.data[0].s_calle_1+" "+response.data[0].s_calle_2;
+                    me.referencias = response.data[0].s_referencias;
+                    $('#modalNew').modal('show');                    
+                }).catch(function (error){
+                    console.log(error);
+                });
             },
             //Metodo para rellenar los campos del formulario y mostrar modal al momento de seleccionar un usuario.
-            camposUpdate(data){
-                $('#modalUpdate').modal('show');
-                this.update = data.id;
+            mostrarModalInfo(data){
                 let me = this;
-                let url = './personas/'+this.update;
+                this.descripcion = '';
+                this.id_estado = 0;
+                this.ruta = '';
+                this.id_solicitud = data.id;
+                //Se limpian los campos del modal
+                let url = './peticioninfo/'+data.id;
                 axios.get(url).then(function (response){
-                    me.nombre = response.data.nombre;
-                    me.apellido_p = response.data.apellido_p;
-                    me.apellido_m = response.data.apellido_m;
-                    me.cargo = response.data.cargo;
-                    me.foto_old = response.data.ruta_foto;
+                    console.log(response.data);
+                    me.nombre = response.data[0].p_nombre+" "+response.data[0].p_apellido_p+" "+response.data[0].p_apellido_m;
+                    me.telefono = response.data[0].p_celular;
+                    me.fecha = response.data[0].created_at;
+                    me.estado = response.data[0].descripcion;
+                    me.ultimafecha = response.data[0].ultima;
+                    me.ultimanota = response.data[0].descripcion;
+                    me.descripcions = response.data[0].s_descripcion;
+                    me.servicio = response.data[0].servicio;
+                    me.prioridad = response.data[0].prioridad;
+                    me.colonia = response.data[0].colonia;
+                    me.calle = response.data[0].s_calle_p;
+                    me.entre = response.data[0].s_calle_1+" "+response.data[0].s_calle_2;
+                    me.referencias = response.data[0].s_referencias;
+                    $('#modalInfo').modal('show');                    
                 }).catch(function (error){
                     console.log(error);
                 });
             },
             //mostrar modal eliminar
-            mostrarModalDelete(data) {
-                this.id_borrar = data.id;
-                $('#modalDelete').modal('show');               
+            mostrarModalHistorial(data) {
+                let me = this;
+                let url = './gethistorial/'+data.id;
+                axios.get(url).then(function (response){
+                    me.historiales = response.data;
+                    $('#modalHistorial').modal('show');                    
+                }).catch(function (error){
+                    console.log(error);
+                });             
             },
             //Metodo para agregar un nuevo usuario
             createNew() {
                 //se toman los parametros de los campos
-                const params = {
-                    nombre: this.nombre,
-                    apellido_p: this.apellido_p,
-                    apellido_m: this.apellido_m,
-                    cargo: this.cargo,
-                    ruta: this.ruta
-                };
-
                 let me = this;
+                this.id_usuario = 1;
 
                 let formData = new FormData();
-                formData.append('nombre', this.nombre);
-                formData.append('apellido_p', this.apellido_p);
-                formData.append('apellido_m', this.apellido_m);
-                formData.append('cargo', this.cargo);
+                formData.append('descripcion', this.descripcion);
+                formData.append('id_estado', this.id_estado);
+                formData.append('id_solicitud', this.id_solicitud);
+                formData.append('id_usuario', this.id_usuario);
                 formData.append('ruta', this.ruta);
                 
                 //Petición post para hacer un nuevo registro.
-                axios.post('./personas', formData,{
+                axios.post('./historiales', formData,{
                      headers: {
                     'Content-Type': 'multipart/form-data'
                     }
@@ -294,66 +377,28 @@
                     console.log(response);
                     //Actualizando la lista de productos.
                     me.reloadData();
-                    swal("Exito!", "Se ha registrado una nueva persona!", "success");
+                    swal("Exito", "Se ha añadido un nuevo estado en la petición", "success");
                 })
                 .catch(function (error){
                     console.log(error);
                 });
 
                 //Se limpian los campos del modal
-                this.nombre = '';
-                this.apellido_p = '';
-                this.apellido_m = '';
-                this.cargo = '';
+                this.descripcion = '';
+                this.id_estado = 0;
                 this.ruta = '';
             
                 //Ocultar el modal
                 $('#modalNew').modal('hide');
             },
-            //Metodo para actualizar los datos del registro.
-            updateR(){
-                /*let formData = new FormData();
-                formData.append('nombre', this.nombre);
-                formData.append('apellido_p', this.apellido_p);
-                formData.append('apellido_m', this.apellido_m);
-                formData.append('cargo', this.cargo);
-                formData.append('ruta_foto', this.ruta);*/
-
-                let me = this;
-                axios.put('./personas', {
-                    'id' : this.update,
-                    'nombre' : this.nombre,
-                    'apellido_p' : this.apellido_p,
-                    'apellido_m' : this.apellido_m,
-                    'cargo' : this.cargo,
-                    'ruta_foto' : this.ruta
-                }).then(function (response){
-                    swal("Persona modificada", "Se ha modificado la información de la persona", "info");
-                    me.reloadData();
-                }).catch(function (error){
-                    console.log(error);
-                });
-                //Cerrando el modal después de actualizar el usuario.
-                $('#modalUpdate').modal('hide');
-                this.nombre = '';
-                this.apellido_p = '';
-                this.apellido_m = '';
-                this.cargo = '';
-                this.ruta = '';
-            },
-            //metodo para eliminar
-            onClickDelete() {
-                let me = this;
-                axios.delete('./personas/'+this.id_borrar).then(() => {                    
-                    me.reloadData();
-                    swal("Persona eliminada", "Se ha eliminado la persona exitosamente", "info");
-                });
-                $('#modalDelete').modal('hide');
+            mostrarDoc(data){
+                $('#modalHistorial').modal('hide'); 
+                $('#modalAcuse').modal('show'); 
             },
             //actualizar registros
             reloadData(){
                 let me = this;
-                let url = './personas' //url que retorna los registros de la tabla empresas
+                let url = './solicitudes' //url que retorna los registros de la tabla empresas
                 axios.get(url).then(function (response) {
                     me.personas = response.data;
                 })

@@ -31,7 +31,7 @@
 
                     <hr>
                     <p class="text-dark text-center">Ingrese su nombre de usuario y contraseña</p>
-                    <form action="./login" method="post">
+                    <form action="/acceder" method="POST">
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -57,6 +57,7 @@
                             </div>
                         </div> <!-- form-group// -->
                         <div class="form-group">
+                        @csrf
                             <input type="submit" class="btn btn-primary btn-block"/>
                         </div> <!-- form-group// -->
                     </form>
