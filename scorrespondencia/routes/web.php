@@ -18,6 +18,7 @@ Route::get('/login', function () {
     return view('login');
 });
 Route::post('/acceder', 'UsuariosController@acceder');
+Route::get('/logout', 'UsuariosController@salir');
 
 
 //rutas para vistas
@@ -26,7 +27,7 @@ Route::get('/home', function () {
 });
 
 Route::get('/index', function () {
-    return view('index_admin');
+    return view('contenido.index_admin');
 });
 
 //ruta retorna la vista de usuarios

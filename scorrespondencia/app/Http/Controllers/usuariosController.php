@@ -60,14 +60,22 @@ class usuariosController extends Controller
     public function acceder(Request $request)
     {
         //se busca al usuario que se quiere eliminar
-        return $usuario = DB::table('usuarios')->join('personas', 'usuarios.id_persona', '=', 'personas.id')->join('roles', 'usuarios.id_rol', '=', 'roles.id')->select('usuarios.*', 'personas.nombre as nombre_persona', 'personas.apellido_p', 'personas.apellido_m', 'personas.cargo', 'personas.ruta_foto', 'roles.nombre as nombre_rol')->where('usuarios.nombre','=',$request->usuario)->where('usuarios.contraseña','=',$request->contrasena)->get()->toArray();
+        $usuario = DB::table('usuarios')->join('personas', 'usuarios.id_persona', '=', 'personas.id')->join('roles', 'usuarios.id_rol', '=', 'roles.id')->select('usuarios.*', 'personas.nombre as nombre_persona', 'personas.apellido_p', 'personas.apellido_m', 'personas.cargo', 'personas.ruta_foto', 'roles.nombre as nombre_rol')->where('usuarios.nombre','=',$request->usuario)->where('usuarios.contraseña','=',$request->contrasena)->get()->toArray();
         
-        if($usuario!=null){
+        //$usuario[0]->nombre;
+        if(isset($usuario[0])){
             $request->session()->put('data',$usuario);
-            redirect('index');
+            return redirect('index');
         }else{
-            redirect('login');
+            return redirect('login');
         }
 
+    }
+
+    //metodo para salir de la sesion
+    public function salir()
+    {
+        session()->forget('data');
+        return redirect('login');
     }
 }

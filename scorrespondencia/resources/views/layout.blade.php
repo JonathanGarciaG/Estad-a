@@ -1,9 +1,6 @@
 <!doctype html>
 <html lang="en">
 <?php
-
-
-
 ?>
 <head>
     <meta charset="utf-8">
@@ -65,23 +62,29 @@
                 <div class="app-header-left">
                     
                     <ul class="header-menu nav">
-                        
+                        @if(session('data')[0]->nombre_rol=='Capturista')
                         <li class="btn-group nav-item">
-                            <a href="javascript:void(0);" class="nav-link">
+                            <a href="peticionesfv" class="nav-link">
                                 <i class="nav-link-icon fa fa-edit"></i>
                                 Realizar Reporte
                             </a>
                         </li>
-                        
+                        @endif
                     </ul>        </div>
                 <div class="app-header-right">
                     <div class="header-btn-lg pr-0">
                         <div class="widget-content p-0">
                             <div class="widget-content-wrapper">
+                                <li class="btn-group nav-item">
+                                    <a href="logout" class="nav-link">
+                                        <i class="nav-link-icon fa fa-logout"></i>
+                                        Cerrar sesión
+                                    </a>
+                                </li>
                                 <div class="widget-content-left">
                                     <div class="btn-group">
                                         <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
-                                            <img width="42" class="rounded-circle" src="assets/images/avatars/1.jpg" alt="">
+                                            <img width="42" class="rounded-circle" src={{session('data')[0]->ruta_foto}} alt="">
                                             <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                         </a>
                                         <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
@@ -92,10 +95,10 @@
                                 </div>
                                 <div class="widget-content-left  ml-3 header-user-info">
                                     <div class="widget-heading">
-                                        Super Admin 
+                                        {{session('data')[0]->nombre_persona}} {{session('data')[0]->apellido_p}} {{session('data')[0]->apellido_m}} 
                                     </div>
                                     <div class="widget-subheading">
-                                        Administrador
+                                        {{session('data')[0]->nombre_rol}}
                                     </div>
                                 </div>
                                 <div class="col-md-2"><img src="logotam.png" width="90px"></div>
@@ -139,40 +142,63 @@
                     </div>    <div class="scrollbar-sidebar">
                         <div class="app-sidebar__inner">
                             <ul class="vertical-nav-menu">
+
+                                @if(session('data')[0]->nombre_rol == "Administrador")
                                 <li class="app-sidebar__heading">Administrador</li>
                                 <li>
-                                    <a href="index.html">
+                                    <a href="index">
                                         <i class="metismenu-icon pe-7s-home"></i>
                                         Inicio
                                     </a>
-                                    <a href="index.html" class="mm-active">
+                                    <a href="usuariosv">
                                         <i class="metismenu-icon pe-7s-user"></i>
                                         Usuarios
                                     </a>
-                                    <a href="index.html">
+                                    <a href="direccionesv">
                                         <i class="metismenu-icon pe-7s-culture"></i>
                                         Direcciones
                                     </a>
                                 </li>
-                                <li class="app-sidebar__heading">Peticiones</li>
+
+                                @elseif(session('data')[0]->nombre_rol == "Director")
+                                <li class="app-sidebar__heading">Director</li>
                                 <li>
-                                    <a href="#">
+                                    <a href="index">
+                                        <i class="metismenu-icon pe-7s-home"></i>
+                                        Inicio
+                                    </a>
+                                    <a href="peticionesv">
                                         <i class="metismenu-icon pe-7s-mail-open-file"></i>
-                                        Reportes
+                                        Peticiones
                                     </a>           
                                 </li>
+
+                                @elseif(session('data')[0]->nombre_rol == 'Capturista')
+                                <li class="app-sidebar__heading">Capturista</li>
                                 <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-graph2"></i>
-                                        Estadisticas
+                                    <a href="index">
+                                        <i class="metismenu-icon pe-7s-home"></i>
+                                        Inicio
                                     </a>
+                                    <a href="peticionesv">
+                                        <i class="metismenu-icon pe-7s-mail-open-file"></i>
+                                        Peticiones
+                                    </a>           
                                 </li>
+
+                                @elseif(session('data')[0]->nombre_rol == 'Presidente Municipal')
+                                <li class="app-sidebar__heading">Presidente Municipal</li>
                                 <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-settings"></i>
-                                        Configuración
+                                    <a href="index">
+                                        <i class="metismenu-icon pe-7s-home"></i>
+                                        Inicio
                                     </a>
+                                    <a href="peticionesv">
+                                        <i class="metismenu-icon pe-7s-mail-open-file"></i>
+                                        Peticiones
+                                    </a>           
                                 </li>
+                                @endif
                             </ul>
                         </div>
                     </div>
