@@ -27,6 +27,7 @@
                                         <estado-component :peticion="peticion"></estado-component>
                                     </td>
                                     <td class="text-center">
+                                        <button class="mr-2 btn-icon btn-icon-only btn btn-outline-warning" v-on:click="mostrarModal(peticion)"><i class="pe-7s-pen btn-icon-wrapper"> </i></button>
                                         <button class="mr-2 btn-icon btn-icon-only btn btn-outline-info" v-on:click="mostrarModalInfo(peticion)"><i class="pe-7s-look btn-icon-wrapper"> </i></button>
                                         <button class="mr-2 btn-icon btn-icon-only btn btn-outline-success" v-on:click="mostrarModalHistorial(peticion)"><i class="pe-7s-menu btn-icon-wrapper"> </i></button>
                                     </td>
@@ -239,14 +240,26 @@
                 referencias:"",
                 id_solicitud:0,
                 id_usuario:0,
-                e_descripcion:""
+                e_descripcion:"",
+                id_usuario_a:0
             }
         },
+        props: ['id_direccion'],
         mounted() {
             console.log('Component mounted.')
             //actualiza los datos
             let me = this;
-            let url = './solicitudes' //el url devuelve los registros de la tabla personas
+            let url = './getusersession' //el url devuelve los registros de la tabla personas
+            axios.get(url).then(function (response) {
+                //se almacenan al array los datos de la respuesta obtenida del url
+                me.id_usuario_a = response.data;
+                console.log(me.id_usuario_a)
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+            //console.log(id_usuario_a)
+            url = './getsolicitudes/'+me.id_direccion //el url devuelve los registros de la tabla personas
             axios.get(url).then(function (response) {
                 //se almacenan al array los datos de la respuesta obtenida del url
                 me.peticiones = response.data;
@@ -339,7 +352,7 @@
             createNew() {
                 //se toman los parametros de los campos
                 let me = this;
-                this.id_usuario = 1;
+                this.id_usuario = me.id_usuario_a;
 
                 let formData = new FormData();
                 formData.append('descripcion', this.descripcion);

@@ -15,6 +15,13 @@ class solicitudesController extends Controller
     	//return DB::table('solicitudes')->join('prioridades', 'solicitudes.s_id_prioridad', '=', 'prioridades.id')->join('historials', 'solicitudes.id', '=', 'historials.id_solicitud')->select('solicitudes.*', 'prioridades.nombre as prioridad', 'historials.id_estado as estado')->get();
     }
 
+    //funcion que retorna los valores de los registros de la tabla solicitudes pertenecientes al director actual
+    public function getSolicitudesDirector($id){
+        //se retornan los valores de los registros de la tabla solicitudes
+        return DB::table('solicitudes')->join('prioridades', 'solicitudes.s_id_prioridad', '=', 'prioridades.id')->join('servicios','solicitudes.s_id_servicio','=','servicios.id')->select('solicitudes.*', 'prioridades.nombre as prioridad', 'servicios.id_direccion')->where('servicios.id_direccion','=', $id)->get();
+        //return DB::table('solicitudes')->join('prioridades', 'solicitudes.s_id_prioridad', '=', 'prioridades.id')->join('historials', 'solicitudes.id', '=', 'historials.id_solicitud')->select('solicitudes.*', 'prioridades.nombre as prioridad', 'historials.id_estado as estado')->get();
+    }
+
     //metodo del controlador para agregar un usuario mediante un request recibido
     public function store(Request $request)
     {	
@@ -241,9 +248,26 @@ class solicitudesController extends Controller
     public function generarAcusePDF($id){
         $informacion = DB::table('solicitudes')->join('historials', 'historials.id_solicitud', '=', 'solicitudes.id')->join('prioridades', 'prioridades.id', '=', 'solicitudes.s_id_prioridad')->join('servicios', 'servicios.id', '=', 'solicitudes.s_id_servicio')->join('colonias', 'colonias.id', '=', 'solicitudes.s_id_colonia')->join('direcciones', 'direcciones.id', '=', 'servicios.id_direccion')->join('personas', 'personas.id', '=', 'direcciones.id_persona')->select(DB::raw('solicitudes.*, historials.created_at as ultima, historials.descripcion, servicios.nombre as servicio, prioridades.nombre as prioridad, colonias.codigo_postal as codigo_p, colonias.nombre as colonia, direcciones.nombre as nombre_direccion, personas.nombre as nombre_director, personas.apellido_p as apellido_p_director, personas.apellido_m as apellido_m_director'))->where('historials.id_solicitud','=',$id)->orderBy('historials.created_at', 'desc')->limit(1)->get()->toArray();
         $pdf = \PDF::loadView('acuse', compact('informacion'));
-        //$pdf = \PDF::loadView('acuse');
         return $pdf->stream('Acuse_'.$informacion[0]->id.'.pdf');
-        //return $pdf->stream('Acuse_.pdf');
+    }
+
+    public function getRegistrosDashboard(){
+        $datos = [0,0,0,0];
+        //$informacion = DB::table('solicitudes')->join('historials', 'historials.id_solicitud', '=', 'solicitudes.id')->join('prioridades', 'prioridades.id', '=', 'solicitudes.s_id_prioridad')->join('servicios', 'servicios.id', '=', 'solicitudes.s_id_servicio')->join('colonias', 'colonias.id', '=', 'solicitudes.s_id_colonia')->join('direcciones', 'direcciones.id', '=', 'servicios.id_direccion')->join('personas', 'personas.id', '=', 'direcciones.id_persona')->select(DB::raw('solicitudes.*, historials.created_at as ultima, historials.descripcion, servicios.nombre as servicio, prioridades.nombre as prioridad, colonias.codigo_postal as codigo_p, colonias.nombre as colonia, direcciones.nombre as nombre_direccion, personas.nombre as nombre_director, personas.apellido_p as apellido_p_director, personas.apellido_m as apellido_m_director'))->where('historials.id_solicitud','=',$id)->orderBy('historials.created_at', 'desc')->limit(1)->get()->toArray();
+        $informacion = DB::table('solicitudes')->select(DB::raw('solicitudes.*, count(*) as numero'))->get()->toArray();
+        $datos[0] = $informacion[0]->numero;
+        $informacion = DB::table('historials')->select(DB::raw('historials.*, count(*) as numero'))->where('id_estado','=',2)->get()->toArray();
+        $datos[1] = $informacion[0]->numero;
+        $informacion = DB::table('historials')->select(DB::raw('historials.*, count(*) as numero'))->where('id_estado','=',3)->get()->toArray();
+        $datos[2] = $informacion[0]->numero;
+        $datos[3] = $datos[0]-($datos[1]+$datos[2]);
+
+        return $datos;
+    }
+
+    public function getNotificaciones(){
+        $datos = DB::table('solicitudes')->join('historials', 'historials.id_solicitud', '=', 'solicitudes.id')->join('prioridades', 'prioridades.id', '=', 'solicitudes.s_id_prioridad')->join('servicios', 'servicios.id', '=', 'solicitudes.s_id_servicio')->join('colonias', 'colonias.id', '=', 'solicitudes.s_id_colonia')->join('direcciones', 'direcciones.id', '=', 'servicios.id_direccion')->join('personas', 'personas.id', '=', 'direcciones.id_persona')->select(DB::raw('solicitudes.*, historials.id_estado'))->where('historials.id_estado','=',2)->get();
+        return $datos;
     }
     
 }

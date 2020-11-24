@@ -64,6 +64,8 @@ Route::put('/roles', 'RolesController@update');
 Route::apiResource('usuarios', 'UsuariosController');
 //Actualizar un registro especifico
 Route::put('/usuarios', 'UsuariosController@update');
+//Actualizar un registro especifico
+Route::get('/getusersession', 'UsuariosController@getuser');
 
 //rutas para controlador de direcciones
 Route::apiResource('direcciones', 'DireccionesController');
@@ -92,11 +94,17 @@ Route::put('/prioridades', 'PrioridadesController@update');
 //rutas para controlador de estados
 Route::apiResource('solicitudes', 'SolicitudesController');
 //Actualizar un registro especifico
+Route::get('/getsolicitudes/{id}', 'SolicitudesController@getSolicitudesDirector');
+//Obtener la informacion de la solicitud
 Route::put('/solicitudes', 'SolicitudesController@update');
 //Obtener la informacion de la solicitud
 Route::get('/peticioninfo/{id}', 'SolicitudesController@peticionInfo');
 //Obtener el acuse de la solicitud
 Route::get('/acuse/{id}', 'SolicitudesController@generarAcusePDF');
+//Obtener los registros del dashboard
+Route::get('/dashboardc', 'SolicitudesController@getRegistrosDashboard');
+//Obtener los registros del dashboard
+Route::get('/peticionesf', 'SolicitudesController@getNotificaciones');
 
 //rutas para controlador de historiales
 Route::apiResource('historiales', 'HistorialesController');
