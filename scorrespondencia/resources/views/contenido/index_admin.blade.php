@@ -14,6 +14,10 @@
             </div>
         </div>
     </div>
-</div>            
+</div>
+@if(session('data')[0]->nombre_rol=='Administrador')
+<dashboardadmin-component></dashboardcapturista-component>
+@else            
 <dashboardcapturista-component></dashboardcapturista-component>
+@endif
 @endsection

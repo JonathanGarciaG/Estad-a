@@ -83,4 +83,23 @@ class usuariosController extends Controller
         session()->forget('data');
         return redirect('login');
     }
+
+    public function getRegistrosDashboardAdmin(){
+        $datos = [0,0,0,0];
+        //$informacion = DB::table('solicitudes')->join('historials', 'historials.id_solicitud', '=', 'solicitudes.id')->join('prioridades', 'prioridades.id', '=', 'solicitudes.s_id_prioridad')->join('servicios', 'servicios.id', '=', 'solicitudes.s_id_servicio')->join('colonias', 'colonias.id', '=', 'solicitudes.s_id_colonia')->join('direcciones', 'direcciones.id', '=', 'servicios.id_direccion')->join('personas', 'personas.id', '=', 'direcciones.id_persona')->select(DB::raw('solicitudes.*, historials.created_at as ultima, historials.descripcion, servicios.nombre as servicio, prioridades.nombre as prioridad, colonias.codigo_postal as codigo_p, colonias.nombre as colonia, direcciones.nombre as nombre_direccion, personas.nombre as nombre_director, personas.apellido_p as apellido_p_director, personas.apellido_m as apellido_m_director'))->where('historials.id_solicitud','=',$id)->orderBy('historials.created_at', 'desc')->limit(1)->get()->toArray();
+        $informacion = DB::table('usuarios')->select(DB::raw('usuarios.*, count(*) as numero'))->get()->toArray();
+        $datos[0] = $informacion[0]->numero;
+        $informacion = DB::table('personas')->select(DB::raw('personas.*, count(*) as numero'))->get()->toArray();
+        $datos[1] = $informacion[0]->numero;
+        $informacion = DB::table('direcciones')->select(DB::raw('direcciones.*, count(*) as numero'))->get()->toArray();
+        $datos[2] = $informacion[0]->numero;
+        $informacion = DB::table('servicios')->select(DB::raw('servicios.*, count(*) as numero'))->get()->toArray();
+        $datos[3] = $informacion[0]->numero;
+
+        return $datos;
+    }
+
+    public function getUltimos(){
+        $datos = DB::table('usuarios')->join('personas', 'usuarios.id_persona', '=', 'personas.id')->join('roles', 'usuarios.id_rol', '=', 'roles.id')->select('usuarios.*', 'personas.nombre as nombre_persona', 'personas.apellido_p', 'personas.apellido_m', 'personas.cargo', 'personas.ruta_foto', 'roles.nombre as nombre_rol')->orderBy('created_at')->get();
+    }
 }

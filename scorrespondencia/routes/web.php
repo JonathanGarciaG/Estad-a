@@ -66,6 +66,10 @@ Route::apiResource('usuarios', 'UsuariosController');
 Route::put('/usuarios', 'UsuariosController@update');
 //Actualizar un registro especifico
 Route::get('/getusersession', 'UsuariosController@getuser');
+//obtener los datos del dashboard de administrador
+Route::get('/dashboardadmin', 'UsuariosController@getRegistrosDashboardAdmin');
+//obtener ultimos usuarios creados
+Route::get('/ultimosusers', 'UsuariosController@getUltimos');
 
 //rutas para controlador de direcciones
 Route::apiResource('direcciones', 'DireccionesController');

@@ -32,7 +32,7 @@ Vue.component('peticiones-component', require('./components/PeticionesComponent.
 Vue.component('peticionesdirector-component', require('./components/PeticionesDirectorComponent.vue').default);
 Vue.component('estado-component', require('./components/EstadoComponent.vue').default);
 Vue.component('dashboardcapturista-component', require('./components/dashboardCapturistaComponent.vue').default);
-//Vue.component('dashboardadmin-component', require('./components/dashboardAdminComponent.vue').default);
+Vue.component('dashboardadmin-component', require('./components/dashboardAdminComponent.vue').default);
 //Vue.component('dashboarddirector-component', require('./components/dashboardDirectorComponent.vue').default);
 
 
