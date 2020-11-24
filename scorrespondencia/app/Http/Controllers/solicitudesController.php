@@ -237,5 +237,13 @@ class solicitudesController extends Controller
     {
         return DB::table('solicitudes')->join('historials', 'historials.id_solicitud', '=', 'solicitudes.id')->join('prioridades', 'prioridades.id', '=', 'solicitudes.s_id_prioridad')->join('servicios', 'servicios.id', '=', 'solicitudes.s_id_servicio')->join('colonias', 'colonias.id', '=', 'solicitudes.s_id_colonia')->select(DB::raw('solicitudes.*, historials.created_at as ultima, historials.descripcion, servicios.nombre as servicio, prioridades.nombre as prioridad, colonias.nombre as colonia'))->where('historials.id_solicitud','=',$id)->orderBy('historials.created_at', 'desc')->limit(1)->get()->toArray();      
     }
+
+    public function generarAcusePDF($id){
+        $informacion = DB::table('solicitudes')->join('historials', 'historials.id_solicitud', '=', 'solicitudes.id')->join('prioridades', 'prioridades.id', '=', 'solicitudes.s_id_prioridad')->join('servicios', 'servicios.id', '=', 'solicitudes.s_id_servicio')->join('colonias', 'colonias.id', '=', 'solicitudes.s_id_colonia')->join('direcciones', 'direcciones.id', '=', 'servicios.id_direccion')->join('personas', 'personas.id', '=', 'direcciones.id_persona')->select(DB::raw('solicitudes.*, historials.created_at as ultima, historials.descripcion, servicios.nombre as servicio, prioridades.nombre as prioridad, colonias.codigo_postal as codigo_p, colonias.nombre as colonia, direcciones.nombre as nombre_direccion, personas.nombre as nombre_director, personas.apellido_p as apellido_p_director, personas.apellido_m as apellido_m_director'))->where('historials.id_solicitud','=',$id)->orderBy('historials.created_at', 'desc')->limit(1)->get()->toArray();
+        $pdf = \PDF::loadView('acuse', compact('informacion'));
+        //$pdf = \PDF::loadView('acuse');
+        return $pdf->stream('Acuse_'.$informacion[0]->id.'.pdf');
+        //return $pdf->stream('Acuse_.pdf');
+    }
     
 }

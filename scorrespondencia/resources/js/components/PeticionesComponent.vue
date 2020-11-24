@@ -163,7 +163,6 @@
         <div class="modal fade" id="modalHistorial" tabindex="2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" style="top: 60px;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                <form action="" enctype="multipart/form-data" class="form-horizontal">
 
                     <div class="modal-header">
                         <h5 class="modal-title"  id="exampleModalLongTitle">Información de la Petición</h5>
@@ -191,7 +190,7 @@
                                         <td class="text-center">{{historial.estado}}</td>
                                         <td class="text-center">{{historial.fecha}}</td>
                                         <td class="text-center">
-                                            <button class="mr-2 btn-icon btn-icon-only btn btn-outline-success" v-on:click="mostrarDoc(historial)"><i class="pe-7s-copy-file btn-icon-wrapper"> </i></button>
+                                            <a :href="'./acuse/'+historial.id_solicitud" target="_blank"><button class="mr-2 btn-icon btn-icon-only btn btn-outline-success"><i class="pe-7s-copy-file btn-icon-wrapper"> </i></button></a>
                                         </td>
                                     </tr>              
                                 </tbody>
@@ -203,27 +202,9 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 </div>
-                </form>
 
                 </div>
 
-            </div>
-        </div>
-        <!--Fin del modal-->
-
-        <!--Inicio del modal de Visualizacion de acuse-->
-        <div class="modal fade" id="modalAcuse" tabindex="2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" style="top: 60px;">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                
-                    <div class="main-card mb-3 card">
-                           <div class="card-body h-100">
-                               <h5 class="card-title">Oficio</h5>
-                               <object width="100%" height="100%" ></object>
-                           </div>
-                    </div>
-
-                </div>
             </div>
         </div>
         <!--Fin del modal-->
@@ -392,8 +373,12 @@
                 $('#modalNew').modal('hide');
             },
             mostrarDoc(data){
-                $('#modalHistorial').modal('hide'); 
-                $('#modalAcuse').modal('show'); 
+                let url = './acuse/'+data.id_solicitud;
+                axios.get(url).then(function (response){
+                                       
+                }).catch(function (error){
+                    console.log(error);
+                });
             },
             //actualizar registros
             reloadData(){

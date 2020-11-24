@@ -95,6 +95,8 @@ Route::apiResource('solicitudes', 'SolicitudesController');
 Route::put('/solicitudes', 'SolicitudesController@update');
 //Obtener la informacion de la solicitud
 Route::get('/peticioninfo/{id}', 'SolicitudesController@peticionInfo');
+//Obtener el acuse de la solicitud
+Route::get('/acuse/{id}', 'SolicitudesController@generarAcusePDF');
 
 //rutas para controlador de historiales
 Route::apiResource('historiales', 'HistorialesController');

@@ -3310,25 +3310,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3483,8 +3464,10 @@ __webpack_require__.r(__webpack_exports__);
       $('#modalNew').modal('hide');
     },
     mostrarDoc: function mostrarDoc(data) {
-      $('#modalHistorial').modal('hide');
-      $('#modalAcuse').modal('show');
+      var url = './acuse/' + data.id_solicitud;
+      axios.get(url).then(function (response) {})["catch"](function (error) {
+        console.log(error);
+      });
     },
     //actualizar registros
     reloadData: function reloadData() {
@@ -44000,86 +43983,65 @@ var render = function() {
       [
         _c("div", { staticClass: "modal-dialog modal-lg" }, [
           _c("div", { staticClass: "modal-content" }, [
-            _c(
-              "form",
-              {
-                staticClass: "form-horizontal",
-                attrs: { action: "", enctype: "multipart/form-data" }
-              },
-              [
-                _vm._m(6),
-                _vm._v(" "),
-                _c("div", { staticClass: "modal-body" }, [
-                  _c("div", { staticClass: "table-responsive" }, [
+            _vm._m(6),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c("div", { staticClass: "table-responsive" }, [
+                _c(
+                  "table",
+                  {
+                    staticClass:
+                      "align-middle mb-0 table table-borderless table-striped table-hover"
+                  },
+                  [
+                    _vm._m(7),
+                    _vm._v(" "),
                     _c(
-                      "table",
-                      {
-                        staticClass:
-                          "align-middle mb-0 table table-borderless table-striped table-hover"
-                      },
-                      [
-                        _vm._m(7),
-                        _vm._v(" "),
-                        _c(
-                          "tbody",
-                          _vm._l(_vm.historiales, function(historial) {
-                            return _c("tr", { key: historial.id }, [
-                              _c(
-                                "td",
-                                { staticClass: "text-center text-muted" },
-                                [_vm._v(_vm._s(historial.id))]
-                              ),
-                              _vm._v(" "),
-                              _c("td", { staticClass: "text-center" }, [
-                                _vm._v(_vm._s(historial.descripcion))
-                              ]),
-                              _vm._v(" "),
-                              _c("td", { staticClass: "text-center" }, [
-                                _vm._v(_vm._s(historial.estado))
-                              ]),
-                              _vm._v(" "),
-                              _c("td", { staticClass: "text-center" }, [
-                                _vm._v(_vm._s(historial.fecha))
-                              ]),
-                              _vm._v(" "),
-                              _c("td", { staticClass: "text-center" }, [
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass:
-                                      "mr-2 btn-icon btn-icon-only btn btn-outline-success",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.mostrarDoc(historial)
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("i", {
-                                      staticClass:
-                                        "pe-7s-copy-file btn-icon-wrapper"
-                                    })
-                                  ]
-                                )
-                              ])
-                            ])
-                          }),
-                          0
-                        )
-                      ]
+                      "tbody",
+                      _vm._l(_vm.historiales, function(historial) {
+                        return _c("tr", { key: historial.id }, [
+                          _c("td", { staticClass: "text-center text-muted" }, [
+                            _vm._v(_vm._s(historial.id))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "text-center" }, [
+                            _vm._v(_vm._s(historial.descripcion))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "text-center" }, [
+                            _vm._v(_vm._s(historial.estado))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "text-center" }, [
+                            _vm._v(_vm._s(historial.fecha))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "text-center" }, [
+                            _c(
+                              "a",
+                              {
+                                attrs: {
+                                  href: "./acuse/" + historial.id_solicitud,
+                                  target: "_blank"
+                                }
+                              },
+                              [_vm._m(8, true)]
+                            )
+                          ])
+                        ])
+                      }),
+                      0
                     )
-                  ])
-                ]),
-                _vm._v(" "),
-                _vm._m(8)
-              ]
-            )
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(9)
           ])
         ])
       ]
-    ),
-    _vm._v(" "),
-    _vm._m(9)
+    )
   ])
 }
 var staticRenderFns = [
@@ -44246,6 +44208,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "mr-2 btn-icon btn-icon-only btn btn-outline-success" },
+      [_c("i", { staticClass: "pe-7s-copy-file btn-icon-wrapper" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-footer" }, [
       _c(
         "button",
@@ -44256,39 +44228,6 @@ var staticRenderFns = [
         [_vm._v("Cancelar")]
       )
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        staticStyle: { top: "60px" },
-        attrs: {
-          id: "modalAcuse",
-          tabindex: "2",
-          role: "dialog",
-          "aria-labelledby": "myLargeModalLabel",
-          "aria-hidden": "true",
-          "data-backdrop": "false"
-        }
-      },
-      [
-        _c("div", { staticClass: "modal-dialog modal-lg" }, [
-          _c("div", { staticClass: "modal-content" }, [
-            _c("div", { staticClass: "main-card mb-3 card" }, [
-              _c("div", { staticClass: "card-body h-100" }, [
-                _c("h5", { staticClass: "card-title" }, [_vm._v("Oficio")]),
-                _vm._v(" "),
-                _c("object", { attrs: { width: "100%", height: "100%" } })
-              ])
-            ])
-          ])
-        ])
-      ]
-    )
   }
 ]
 render._withStripped = true
